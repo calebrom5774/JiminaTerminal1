@@ -1,7 +1,7 @@
 {
   "name": "吉米娜：神域終端",
   "short_name": "吉米娜",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#050507",
   "theme_color": "#d4af37",
@@ -11,6 +11,11 @@
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
+    },
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ]
 } 
