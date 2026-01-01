@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>吉米娜·奧米加：神域戰略終端 V15.1</title>
+    <title>吉米娜·奧米加 V15.2</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#d4af37">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,246 +13,250 @@
         
         body { 
             background: #050507; color: #fff; font-family: 'Noto Sans TC', sans-serif;
-            background-image: linear-gradient(rgba(5, 5, 7, 0.9), rgba(15, 15, 25, 0.96)), url('icon.png');
+            background-image: linear-gradient(rgba(5, 5, 7, 0.92), rgba(15, 15, 25, 0.96)), url('icon.png');
             background-size: cover; background-position: center; background-attachment: fixed;
-            margin: 0; min-height: 100vh; overflow-x: hidden;
+            margin: 0; padding: 0; min-height: 100vh; overflow: hidden;
+        }
+
+        /* 🚀 核心優化：手勢滑動容器 */
+        .swipe-container {
+            display: flex; width: 300vw; height: 100vh;
+            overflow-x: scroll; scroll-snap-type: x mandatory;
+            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+        }
+        .swipe-container::-webkit-scrollbar { display: none; }
+        .page-content {
+            width: 100vw; height: 100vh; scroll-snap-align: start;
+            padding: 20px 15px 120px 15px; overflow-y: auto; flex-shrink: 0;
         }
 
         .font-tech { font-family: 'Orbitron', sans-serif; }
-        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.96); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; overflow: hidden; }
-        .oracle-matrix th, .oracle-matrix td { padding: 8px 4px; border: 1px solid rgba(255,255,255,0.03); text-align: center; font-size: 11px; }
+        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.98); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; overflow: hidden; }
+        .oracle-matrix td { padding: 10px 5px; border: 1px solid rgba(255,255,255,0.03); text-align: center; font-size: 11px; }
+
+        .glass-card { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; }
         
-        .tab-content { display: none; padding-bottom: 80px; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .glass-card { background: rgba(25, 25, 35, 0.8); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; }
-        .text-gold { color: #d4af37; }
-        .bg-navy { background: #0a0a20; }
-        .bg-purple-dark { background: #2a0a3a; }
-
+        /* 🚨 警報系統特效 */
+        @keyframes alert-glow { 0% { background: rgba(0,255,204,0); } 50% { background: rgba(0,255,204,0.15); } 100% { background: rgba(0,255,204,0); } }
+        .attack-alert-long { animation: alert-glow 1s infinite; border: 2px solid #00ffcc !important; }
+        
         /* 底部導航 */
-        .nav-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,10,0.98); border-top: 1px solid rgba(212,175,55,0.4); padding: 12px 0; z-index: 1000; display: flex; }
-        .nav-item { flex: 1; text-align: center; color: #555; font-size: 10px; font-weight: 900; }
+        .nav-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(5,5,10,0.98); border-top: 1px solid rgba(212,175,55,0.4); padding: 12px 0; z-index: 2000; display: flex; }
+        .nav-item { flex: 1; text-align: center; color: #444; font-size: 10px; font-weight: 900; transition: 0.3s; }
         .nav-item.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
 
-        /* 標籤樣式 */
-        .badge-long { background: #004d40; color: #00ffcc; padding: 2px 4px; border-radius: 3px; font-weight: 900; }
-        .badge-short { background: #4a141c; color: #ff5252; padding: 2px 4px; border-radius: 3px; font-weight: 900; }
-        .badge-exit { background: #333; color: #eee; padding: 2px 4px; border-radius: 3px; }
+        .badge-long { background: #00ffcc; color: #000; padding: 2px 5px; border-radius: 4px; font-weight: 900; }
+        .badge-short { background: #ff4d4d; color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 900; }
+        .pinned-tag { background: rgba(212,175,55,0.2); color: #d4af37; border: 1px solid #d4af37; padding: 1px 4px; font-size: 8px; border-radius: 3px; }
     </style>
 </head>
 <body>
 
-    <div class="p-3 max-w-5xl mx-auto">
-        <!-- TOP HEADER -->
-        <div class="flex justify-between items-end mb-4 pt-4">
-            <div>
-                <h1 class="text-lg font-black font-tech text-[#d4af37] italic">JIMINA OMEGA</h1>
-                <p id="market-sentiment" class="text-[9px] font-bold text-red-500 tracking-tighter uppercase">偵測中...</p>
+    <!-- 滑動主體 -->
+    <div class="swipe-container" id="main-swiper">
+        
+        <!-- PAGE 1: 神域主頁 -->
+        <div class="page-content" id="page-home">
+            <div class="flex justify-between items-end mb-6 pt-4">
+                <h1 class="text-xl font-black font-tech text-[#d4af37] italic">JIMINA OMEGA <span class="text-[10px] text-gray-500 font-normal">V15.2</span></h1>
+                <div id="live-time" class="text-[10px] font-tech text-gray-500">SYNCING...</div>
             </div>
-            <div class="text-right">
-                <span id="live-time" class="text-[10px] font-tech text-gray-500">00:00:00</span>
-            </div>
-        </div>
 
-        <!-- TAB 1: 神域主頁 (MACD/DXY/INSTITUTIONAL) -->
-        <div id="tab-home" class="tab-content active">
-            <div class="glass-card p-4 mb-4 border-l-4 border-[#d4af37]">
-                <h2 class="text-[10px] font-black text-gray-500 uppercase tracking-widest mb-3">BTC Macro Full Analysis</h2>
-                <div class="grid grid-cols-2 gap-4">
+            <div class="glass-card p-5 mb-5 border-l-4 border-gold shadow-2xl">
+                <h2 class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Supreme Macro Pulse</h2>
+                <div class="grid grid-cols-2 gap-6">
                     <div>
-                        <p class="text-[9px] text-gray-500 font-bold uppercase">BTC Price</p>
+                        <p class="text-[9px] text-gray-500 font-bold uppercase mb-1">Bitcoin Dominance</p>
                         <h3 id="btc-price" class="text-2xl font-tech font-black text-white">$ --,---</h3>
-                        <div class="flex gap-2 mt-1">
-                            <span id="btc-chg" class="text-[10px] font-bold">--%</span>
-                            <span id="btc-vol" class="text-[10px] text-gray-400 font-tech">Vol: --</span>
+                        <div class="flex items-center gap-2 mt-1">
+                            <span id="btc-chg" class="text-xs font-bold">--%</span>
+                            <span id="btc-vol" class="text-[9px] text-gray-500">--</span>
                         </div>
                     </div>
                     <div class="text-right border-l border-white/5 pl-4">
-                        <p class="text-[9px] text-gray-500 font-bold uppercase">DXY Index (Live Est.)</p>
+                        <p class="text-[9px] text-gray-500 font-bold uppercase mb-1">DXY Delta (Est.)</p>
                         <h3 id="dxy-val" class="text-2xl font-tech font-black text-blue-400">101.42</h3>
-                        <p id="dxy-status" class="text-[9px] font-black">--</p>
+                        <p id="dxy-status" class="text-[9px] font-black tracking-tighter">--</p>
                     </div>
-                </div>
-                <div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-white/5">
-                    <div><p class="text-[8px] text-gray-500 uppercase">24h High</p><p id="btc-high" class="text-xs font-tech">--</p></div>
-                    <div class="text-right"><p class="text-[8px] text-gray-500 uppercase">24h Low</p><p id="btc-low" class="text-xs font-tech">--</p></div>
                 </div>
             </div>
 
-            <div class="oracle-matrix shadow-2xl mb-4">
+            <div class="oracle-matrix mb-5 shadow-2xl">
                 <table style="width:100%">
-                    <tr class="bg-navy text-[10px] font-black"><td colspan="2">機構訂單流即時診斷 (ORDER FLOW)</td></tr>
-                    <tr><td class="w-1/3 row-label text-gray-500">主力當前動作</td><td id="inst-action" class="font-bold text-sm">--</td></tr>
-                    <tr><td class="text-gray-500">主要支撐區塊 (OB)</td><td id="inst-ob" class="font-tech text-blue-400">--</td></tr>
-                    <tr><td class="text-gray-500">大戶持倉意圖</td><td id="inst-bias" class="font-bold">◎ 偵測中</td></tr>
+                    <tr class="bg-[#1a1a2e] text-[10px] font-black text-gold"><td colspan="2">INSTITUTIONAL ORDER FLOW (V14.2)</td></tr>
+                    <tr><td class="w-1/3 text-gray-500">主力當前路徑</td><td id="inst-action" class="font-bold">◎ 掃描中</td></tr>
+                    <tr><td class="text-gray-500">機構平衡價格</td><td id="inst-ob" class="font-tech text-blue-400 font-bold text-sm">--</td></tr>
+                    <tr><td class="text-gray-500">市場情緒極限</td><td id="inst-bias" class="font-bold">偵測中...</td></tr>
                 </table>
             </div>
 
-            <div class="glass-card p-4 border-t-2 border-red-500/50 italic text-xs text-gray-300 leading-relaxed shadow-lg">
-                <i class="fas fa-quote-left mr-2 text-red-500"></i>
-                <span id="oracle-msg">「領主，正在對齊 2026 戰略頻率...」</span>
+            <div class="glass-card p-4 border-t-2 border-red-500 italic text-[11px] text-gray-300 leading-relaxed">
+                <i class="fas fa-bullhorn mr-2 text-gold"></i>
+                <span id="oracle-msg">「領主，神域終端已同步。左右滑動切換戰區。」</span>
             </div>
         </div>
 
-        <!-- TAB 2: 全息雷達 (ALL CRYPTO LIST) -->
-        <div id="tab-radar" class="tab-content">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-[10px] font-black text-gray-500 tracking-[0.3em] uppercase">All Assets Real-time Radar</h2>
-                <span id="asset-count" class="text-[9px] text-[#d4af37] font-tech">Found: --</span>
+        <!-- PAGE 2: 全息雷達 -->
+        <div class="page-content" id="page-radar">
+            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.4em] uppercase mb-4 pt-4">Global Asset Monitor</h2>
+            <div id="mainstream-radar" class="space-y-3 mb-6">
+                <!-- 主流幣種固定置頂 -->
             </div>
-            <div id="full-radar-list" class="space-y-2">
-                <!-- 自動抓取幣安所有 USDT 交易對並排序 -->
-                <div class="text-center py-10 opacity-50 text-xs">神域正在橫掃全幣種市場...</div>
+            <div class="border-t border-white/10 my-4 pt-2">
+                <p class="text-[9px] text-gray-600 font-bold uppercase mb-3">All Altcoin Signals</p>
+                <div id="alt-radar-list" class="space-y-2">
+                    <!-- 全市場山寨幣由強到弱 -->
+                </div>
             </div>
         </div>
 
-        <!-- TAB 3: 奧米加獵殺 (ADVANCED SIGNALS) -->
-        <div id="tab-signals" class="tab-content">
-            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.3em] uppercase mb-4 text-center">Executive Hunting List</h2>
-            <div class="oracle-matrix overflow-hidden shadow-2xl">
-                <table style="width:100%">
-                    <thead class="bg-purple-dark text-[9px] font-black">
-                        <tr><td>幣種</td><td>RS</td><td>指令</td><td>止損/防禦</td></tr>
+        <!-- PAGE 3: 奧米加獵殺 -->
+        <div class="page-content" id="page-signals">
+            <h2 class="text-[10px] font-black text-[#ff4d4d] tracking-[0.4em] uppercase mb-4 text-center pt-4">Execution Protocol: Omega</h2>
+            <div class="oracle-matrix overflow-hidden shadow-2xl mb-4">
+                <table style="width:100%" id="hunting-table">
+                    <thead class="bg-[#2d0a3d] text-[9px] font-black">
+                        <tr><td>幣種</td><td>RS</td><td>指令</td><td>止損位</td></tr>
                     </thead>
-                    <tbody id="hunting-table">
-                        <!-- 基於 V14.2 三重確認的實時指令 -->
+                    <tbody id="signal-body">
+                        <!-- 實時精確訊號 -->
                     </tbody>
                 </table>
             </div>
+            <div id="tactical-alert-log" class="space-y-2">
+                <!-- 這裡顯示最近觸發的真實進攻警報 -->
+            </div>
         </div>
+
     </div>
 
-    <!-- 底部導航 -->
-    <nav class="nav-fixed">
-        <div class="nav-item active" onclick="switchTab('home', this)"><i class="fas fa-chess-rook text-lg block"></i>神域主頁</div>
-        <div class="nav-item" onclick="switchTab('radar', this)"><i class="fas fa-satellite text-lg block"></i>全息雷達</div>
-        <div class="nav-item" onclick="switchTab('signals', this)"><i class="fas fa-bolt text-lg block"></i>奧米加獵殺</div>
+    <!-- 底部導航 (同步滑動狀態) -->
+    <nav class="nav-fixed" id="footer-nav">
+        <div class="nav-item active" data-page="0"><i class="fas fa-chess-rook text-lg block"></i>神域主頁</div>
+        <div class="nav-item" data-page="1"><i class="fas fa-satellite text-lg block"></i>全息雷達</div>
+        <div class="nav-item" data-page="2"><i class="fas fa-crosshairs text-lg block"></i>奧米加獵殺</div>
     </nav>
 
     <script>
-        const BINANCE_TICKER = "https://api.binance.com/api/v3/ticker/24hr";
-        let allMarketData = [];
+        const API_TICKER = "https://api.binance.com/api/v3/ticker/24hr";
+        const MAINSTREAM = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'UNIUSDT'];
+        
+        // --- 1. 手勢滑動與導航連動 ---
+        const swiper = document.getElementById('main-swiper');
+        const navItems = document.querySelectorAll('.nav-item');
 
-        function switchTab(tabId, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('tab-' + tabId).classList.add('active');
-            el.classList.add('active');
-        }
+        swiper.addEventListener('scroll', () => {
+            const pageIndex = Math.round(swiper.scrollLeft / window.innerWidth);
+            navItems.forEach((item, idx) => {
+                item.classList.toggle('active', idx === pageIndex);
+            });
+        });
 
-        async function fetchAllMarketData() {
+        // --- 2. 核心數據運算引擎 ---
+        async function fetchAllData() {
             try {
-                const response = await fetch(BINANCE_TICKER);
-                const data = await response.json();
+                const res = await fetch(API_TICKER);
+                const data = await res.json();
+                const usdtPairs = data.filter(i => i.symbol.endsWith('USDT') && !i.symbol.includes('UP') && !i.symbol.includes('DOWN'));
                 
-                // 只過濾 USDT 交易對，且排除槓桿幣
-                allMarketData = data.filter(i => i.symbol.endsWith('USDT') && !i.symbol.includes('UP') && !i.symbol.includes('DOWN'));
-                
-                updateUI();
+                updateMacro(usdtPairs.find(i => i.symbol === "BTCUSDT"));
+                updateRadar(usdtPairs);
+                updateHunting(usdtPairs);
             } catch (e) { console.log("神域干擾..."); }
         }
 
-        function updateUI() {
-            if (allMarketData.length === 0) return;
-
-            const btc = allMarketData.find(i => i.symbol === "BTCUSDT");
-            const btcPrice = parseFloat(btc.lastPrice);
-            const btcChg = parseFloat(btc.priceChangePercent);
-
-            // 1. 神域主頁更新
-            document.getElementById('btc-price').innerText = '$' + btcPrice.toLocaleString();
-            document.getElementById('btc-chg').innerText = btcChg + '%';
-            document.getElementById('btc-chg').style.color = btcChg > 0 ? '#00ffcc' : '#ff4d4d';
-            document.getElementById('btc-vol').innerText = "Vol: " + (parseFloat(btc.quoteVolume) / 1000000000).toFixed(2) + "B";
-            document.getElementById('btc-high').innerText = parseFloat(btc.highPrice).toLocaleString();
-            document.getElementById('btc-low').innerText = parseFloat(btc.lowPrice).toLocaleString();
+        function updateMacro(btc) {
+            const bPrice = parseFloat(btc.lastPrice);
+            const bChg = parseFloat(btc.priceChangePercent);
+            document.getElementById('btc-price').innerText = '$' + bPrice.toLocaleString();
+            document.getElementById('btc-chg').innerText = bChg + '%';
+            document.getElementById('btc-chg').style.color = bChg > 0 ? '#00ffcc' : '#ff4d4d';
+            document.getElementById('btc-vol').innerText = (parseFloat(btc.quoteVolume)/1e9).toFixed(2) + "B";
             
-            // DXY 模擬
-            const dxyEst = 101.42 + (btcChg * -0.01);
-            document.getElementById('dxy-val').innerText = dxyEst.toFixed(2);
-            document.getElementById('dxy-status').innerText = btcChg > 0 ? "▼ BEARISH PRESSURE" : "▲ BULLISH STRENGTH";
-            document.getElementById('dxy-status').style.color = btcChg > 0 ? "#ff4d4d" : "#00ffcc";
+            document.getElementById('dxy-val').innerText = (101.42 + (bChg * -0.02)).toFixed(2);
+            document.getElementById('dxy-status').innerText = bChg > 0 ? "▼ WEAKENING" : "▲ STRENGTHENING";
+            document.getElementById('inst-ob').innerText = (bPrice * 0.991).toFixed(0);
+            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
+        }
 
-            // 機構行為
-            document.getElementById('inst-action').innerText = btcPrice > parseFloat(btc.openPrice) ? "🔥 強力吸籌" : "🚨 護盤/掛單";
-            document.getElementById('inst-action').style.color = btcPrice > parseFloat(btc.openPrice) ? "#00ffcc" : "#ffaa00";
-            document.getElementById('inst-ob').innerText = (btcPrice * 0.992).toFixed(0);
-            document.getElementById('inst-bias').innerText = btcChg < -2 ? "💀 獵殺槓桿" : "🛡️ 結構加固";
+        function updateRadar(data) {
+            const mRadar = document.getElementById('mainstream-radar');
+            const aRadar = document.getElementById('alt-radar-list');
+            mRadar.innerHTML = ''; aRadar.innerHTML = '';
 
-            const sentiment = document.getElementById('market-sentiment');
-            sentiment.innerText = btcChg < -2 ? "⚠️ 敵方清算期" : btcChg > 2 ? "🚀 我軍衝鋒期" : "⌛ 橫盤博弈期";
+            // 分離主流與山寨
+            const mainstreamData = data.filter(i => MAINSTREAM.includes(i.symbol));
+            const altData = data.filter(i => !MAINSTREAM.includes(i.symbol)).sort((a,b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
 
-            // 2. 全息雷達更新 (顯示所有幣種，按強弱排序)
-            const radarList = document.getElementById('full-radar-list');
-            document.getElementById('asset-count').innerText = `Found: ${allMarketData.length}`;
-            
-            // 排序邏輯：按漲跌幅模擬 RS 指數排序
-            const sortedData = [...allMarketData].sort((a, b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
-            
-            radarList.innerHTML = '';
-            sortedData.forEach(coin => {
+            const renderCoin = (coin, isMain) => {
                 const price = parseFloat(coin.lastPrice);
                 const chg = parseFloat(coin.priceChangePercent);
-                const rsScore = Math.round(70 + (chg * 1.5));
-                const stage = chg > 1.5 ? "2:主升" : chg < -1.5 ? "5:衰退" : "3:洗盤";
-
-                radarList.innerHTML += `
-                    <div class="glass-card p-3 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
-                        <div class="flex flex-col">
-                            <span class="font-black text-xs">${coin.symbol.replace('USDT','')} <span class="text-[8px] text-gray-500 font-tech ml-1">RS: ${rsScore}</span></span>
-                            <span class="text-[8px] text-gray-400 font-bold uppercase tracking-tighter">Stage ${stage}</span>
+                const rs = Math.round(70 + (chg * 1.5));
+                return `
+                    <div class="glass-card p-3 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'} ${rs > 90 ? 'attack-alert-long' : ''}">
+                        <div>
+                            <span class="font-black text-sm">${coin.symbol.replace('USDT','')} ${isMain ? '<span class="pinned-tag">MAIN</span>' : ''}</span>
+                            <p class="text-[9px] text-gray-500 font-tech uppercase">RS Score: ${rs} | Stage ${chg > 0 ? '2' : '3'}</p>
                         </div>
                         <div class="text-right">
-                            <p class="font-tech font-bold text-xs">$${price < 1 ? price.toFixed(6) : price.toLocaleString()}</p>
-                            <p class="text-[9px] font-black ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg > 0 ? '+' : ''}${chg}%</p>
+                            <p class="font-tech font-bold text-xs">$${price < 1 ? price.toFixed(5) : price.toLocaleString()}</p>
+                            <p class="text-[9px] font-black ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
                         </div>
                     </div>
                 `;
-            });
+            };
 
-            // 3. 奧米加獵殺 (精確信號)
-            const huntingTable = document.getElementById('hunting-table');
-            huntingTable.innerHTML = '';
-            
-            sortedData.forEach(coin => {
-                const price = parseFloat(coin.lastPrice);
-                const chg = parseFloat(coin.priceChangePercent);
-                const rsScore = Math.round(70 + (chg * 1.5));
-                
-                let signal = "";
-                let stopLoss = "";
-
-                if (rsScore >= 88) {
-                    signal = '<span class="badge-long">STRONG LONG</span>';
-                    stopLoss = (price * 0.97).toFixed(price < 1 ? 6 : 2);
-                } else if (rsScore <= 62) {
-                    signal = '<span class="badge-short">STRONG SHORT</span>';
-                    stopLoss = (price * 1.03).toFixed(price < 1 ? 6 : 2);
-                } else if (rsScore > 80 && rsScore < 88) {
-                    signal = '<span class="text-green-600 font-bold text-[9px]">HOLD LONG</span>';
-                    stopLoss = "PROTECT";
-                } else {
-                    return; // 信心不足不予顯示，保持清單精確
-                }
-
-                huntingTable.innerHTML += `
-                    <tr>
-                        <td class="font-black">${coin.symbol.replace('USDT','')}</td>
-                        <td class="font-tech ${rsScore > 75 ? 'text-green-400' : 'text-red-400'}">${rsScore}</td>
-                        <td>${signal}</td>
-                        <td class="font-tech text-gray-400">${stopLoss}</td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
-            document.getElementById('oracle-msg').innerText = btcChg < -1 ? "「領主，目前 BTC 跌破 150MA 預期，大盤進入風險區。請盯緊雷達中的弱勢幣，可能是絕佳的空頭獵殺目標。」" : "「RS 指數顯示我軍領袖幣種正在蓄勢，請確認 12K 高點突破後果斷進場。」";
+            mainstreamData.forEach(c => mRadar.innerHTML += renderCoin(c, true));
+            altData.forEach(c => aRadar.innerHTML += renderCoin(c, false));
         }
 
-        setInterval(fetchAllMarketData, 5000);
-        fetchAllMarketData();
+        function updateHunting(data) {
+            const body = document.getElementById('signal-body');
+            const alertLog = document.getElementById('tactical-alert-log');
+            body.innerHTML = ''; 
+            
+            const sorted = data.sort((a,b) => {
+                // 主流幣永遠優先於表格頂部
+                const aMain = MAINSTREAM.includes(a.symbol) ? 1 : 0;
+                const bMain = MAINSTREAM.includes(b.symbol) ? 1 : 0;
+                if(aMain !== bMain) return bMain - aMain;
+                return parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent);
+            });
+
+            sorted.forEach(coin => {
+                const chg = parseFloat(coin.priceChangePercent);
+                const rs = Math.round(70 + (chg * 1.5));
+                const price = parseFloat(coin.lastPrice);
+                
+                if(rs >= 88 || rs <= 62 || MAINSTREAM.includes(coin.symbol)) {
+                    let cmd = rs >= 88 ? '<span class="badge-long">STRONG LONG</span>' : 
+                              rs <= 62 ? '<span class="badge-short">STRONG SHORT</span>' : 
+                              '<span class="text-gray-500">NEUTRAL</span>';
+                    
+                    if(rs >= 88 && !MAINSTREAM.includes(coin.symbol)) triggerAttackAlert(coin.symbol.replace('USDT',''));
+
+                    body.innerHTML += `
+                        <tr>
+                            <td class="font-black ${MAINSTREAM.includes(coin.symbol) ? 'text-gold' : ''}">${coin.symbol.replace('USDT','')}</td>
+                            <td class="font-tech">${rs}</td>
+                            <td>${cmd}</td>
+                            <td class="text-gray-500 font-tech">${(price * (rs >= 88 ? 0.97 : 1.03)).toFixed(2)}</td>
+                        </tr>
+                    `;
+                }
+            });
+        }
+
+        // --- 3. 警訊提醒系統 ---
+        function triggerAttackAlert(name) {
+            const msg = document.getElementById('oracle-msg');
+            msg.innerText = `「警報！偵測到部隊 ${name} 正在發起真實進攻！RS 指數已達標。」`;
+            msg.classList.add('text-green-400', 'font-black');
+            if (navigator.vibrate) navigator.vibrate([100, 50, 100]); // 震動提醒
+        }
+
+        setInterval(fetchAllData, 4000);
+        fetchAllData();
     </script>
 </body>
 </html>
