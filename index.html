@@ -2,84 +2,97 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>吉米娜·奧米加：神域主宰 V5.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>吉米娜·奧米加 V6.0</title>
+    <!-- App 圖標與 PWA 配置 -->
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#d4af37">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Noto+Sans+TC:wght@400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Noto+Sans+TC:wght@300;700;900&display=swap');
+        
+        :root { --gemini-blue: #00f2fe; --gemini-purple: #0033ff; --gold: #d4af37; }
         
         body { 
             background: #050507; color: #fff; font-family: 'Noto Sans TC', sans-serif;
-            /* 🏰 戰爭背景：軍隊大戰場景 */
-            background-image: linear-gradient(rgba(5, 5, 7, 0.7), rgba(15, 15, 25, 0.85)), url('icon.png');
+            background-image: linear-gradient(rgba(5, 5, 7, 0.8), rgba(15, 15, 25, 0.92)), url('icon.png');
             background-size: cover; background-position: center; background-attachment: fixed;
             margin: 0; min-height: 100vh; overflow-x: hidden;
         }
 
         .font-tech { font-family: 'Orbitron', sans-serif; }
 
-        /* 精細儀表板 - 完美復刻 TradingView 靈魂 */
-        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(25, 25, 35, 0.9); border: 1px solid #444; border-radius: 15px; overflow: hidden; }
-        .oracle-matrix td { padding: 12px; border: 1px solid rgba(255,255,255,0.06); text-align: center; font-size: 13px; }
-        .header-lord { background: #2a2a72; font-weight: 900; width: 50%; border-bottom: 2px solid #3b82f6; }
-        .header-oracle { background: #4b0082; font-weight: 900; width: 50%; border-bottom: 2px solid #a855f7; }
-        .row-label { background: rgba(0,0,0,0.4); color: #999; }
-        .stage-active { color: #ff5555; font-size: 16px; font-weight: 900; text-shadow: 0 0 10px rgba(255,0,0,0.5); }
-
-        /* 靈魂核心按鈕 - 模仿高端 AI 圖示 */
-        #voice-core {
-            position: fixed; bottom: 100px; right: 25px; width: 65px; height: 65px;
-            background: radial-gradient(circle, #d4af37, #8b4513);
-            border-radius: 50%; box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
-            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000;
-            border: 3px solid rgba(255,255,255,0.2); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* 儀表板 - 終極精細版 */
+        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.95); border: 1px solid rgba(212, 175, 55, 0.4); border-radius: 20px; overflow: hidden; }
+        .oracle-matrix td { padding: 12px; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 13px; }
+        .header-lord { background: linear-gradient(90deg, #1a1a72, #0033ff); font-weight: 900; }
+        .header-oracle { background: linear-gradient(90deg, #4b0082, #a855f7); font-weight: 900; }
+        .row-label { background: rgba(0,0,0,0.5); color: #888; font-weight: bold; }
+        
+        /* 語音共鳴場 (Gemini 3 風格) */
+        #voice-field {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 242, 254, 0.15), transparent);
+            pointer-events: none; opacity: 0; transition: opacity 0.5s; z-index: 1;
         }
-        #voice-core.listening { background: radial-gradient(circle, #00f2fe, #0033ff); box-shadow: 0 0 40px #0033ff; transform: scale(1.1); }
-        .voice-wave { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 2px solid #00f2fe; opacity: 0; }
-        #voice-core.listening .voice-wave { animation: wave 1.5s infinite; }
-        @keyframes wave { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2); opacity: 0; } }
+        body.listening #voice-field { opacity: 1; }
 
-        .glass-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(212,175,55,0.2); border-radius: 20px; }
-        .nav-btn { cursor: pointer; transition: 0.3s; padding: 12px; }
-        .nav-active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
+        /* 靈魂核心 - 模仿 ChatGPT Advanced Voice */
+        #voice-core {
+            position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%);
+            width: 80px; height: 80px; border-radius: 50%;
+            background: #000; border: 2px solid var(--gold);
+            display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3); transition: all 0.4s;
+        }
+        #voice-core.active { border-color: var(--gemini-blue); box-shadow: 0 0 50px var(--gemini-blue); }
+        .inner-wave { width: 40px; height: 40px; background: var(--gold); border-radius: 50%; transition: all 0.3s; }
+        #voice-core.active .inner-wave { background: var(--gemini-blue); transform: scale(1.2); animation: pulse-inner 1s infinite; }
+        
+        @keyframes pulse-inner { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.3); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+
+        .status-tag { font-size: 10px; font-weight: 900; padding: 2px 8px; border-radius: 4px; letter-spacing: 1px; }
+        .nav-btn { color: #666; transition: 0.3s; cursor: pointer; }
+        .nav-btn.active { color: var(--gold); text-shadow: 0 0 10px var(--gold); }
     </style>
 </head>
-<body>
+<body class="p-4">
 
-    <!-- 靈魂核心 (語音感應器) -->
-    <div id="voice-core" onclick="toggleVoice()">
-        <div class="voice-wave"></div>
-        <i class="fas fa-microphone-lines text-white text-2xl"></i>
-    </div>
+    <div id="voice-field"></div>
 
-    <div class="p-3 max-w-4xl mx-auto pb-32">
-        <!-- Top HUD -->
-        <div class="flex justify-between items-center mb-5 pt-2">
-            <h1 class="text-xl font-black font-tech tracking-tighter text-[#d4af37] italic">JIMINA <span class="text-white">OMEGA</span></h1>
-            <div id="btc-price" class="text-2xl font-tech font-black text-white">$ --,---</div>
+    <!-- 終極戰術介面 -->
+    <div class="relative z-10 max-w-4xl mx-auto pb-40">
+        <!-- Top Info -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h1 class="text-2xl font-black font-tech text-gold italic tracking-tighter">JIMINA <span class="text-white">OMEGA</span></h1>
+                <div id="market-status" class="status-tag mt-2 bg-red-900/60 text-red-400 border border-red-500/50 inline-block animate-pulse">敵方強壓期</div>
+            </div>
+            <div class="text-right">
+                <div id="btc-price" class="text-2xl font-tech font-bold text-white leading-none">$ --,---</div>
+                <div class="text-[9px] text-gray-500 font-bold uppercase mt-1 tracking-widest">BTC/USDT Oracle</div>
+            </div>
         </div>
 
-        <!-- 終極戰情儀表板 - 全數據回歸 -->
-        <div class="rounded-2xl overflow-hidden shadow-2xl mb-6">
-            <table class="oracle-matrix">
+        <!-- 全息戰情儀表板 -->
+        <div class="oracle-matrix shadow-2xl mb-8">
+            <table style="width:100%">
                 <tr>
-                    <td class="header-lord font-tech text-[10px]">LORD CALEB COMMAND</td>
-                    <td class="header-oracle font-tech text-[10px]">V14.2 OMEGA ORACLE</td>
+                    <td class="header-lord font-tech text-[10px]">SUPREME COMMANDER CALEB</td>
+                    <td class="header-oracle font-tech text-[10px]">V6.0 OMEGA CORE</td>
                 </tr>
                 <tr>
                     <td class="row-label">情緒階段</td>
-                    <td id="td-stage" class="stage-active">第 5 階段：大浪結束</td>
+                    <td id="td-stage" style="color: #ff4d4d; font-weight: 900; font-size: 16px;">第 5 階段：大浪結束</td>
                 </tr>
                 <tr>
                     <td class="row-label">奧米加信心評分</td>
-                    <td id="td-conf" class="text-[#d4af37] font-black text-lg">15%</td>
+                    <td id="td-conf" class="text-gold font-tech font-black text-xl">15%</td>
                 </tr>
                 <tr>
                     <td class="row-label">加密領袖 RS</td>
-                    <td id="td-rs" class="text-[#00d2ff] font-bold">50</td>
+                    <td id="td-rs" class="text-[#00d2ff] font-bold">50 (弱勢)</td>
                 </tr>
                 <tr>
                     <td class="row-label">大盤 Alpha</td>
@@ -87,132 +100,125 @@
                 </tr>
                 <tr>
                     <td class="row-label">VCP 收斂感應</td>
-                    <td id="td-vcp" class="text-pink-500 font-bold">🎯 波動壓縮</td>
+                    <td id="td-vcp" class="text-pink-500 font-bold">◎ 波動發散</td>
                 </tr>
                 <tr>
                     <td class="row-label">Delta 聰明錢</td>
-                    <td id="td-delta" class="text-blue-400 font-bold">● 淨買入</td>
+                    <td id="td-delta" class="text-blue-400 font-bold">○ 主力吸收中</td>
                 </tr>
                 <tr>
                     <td class="row-label">護航止損 (1x)</td>
-                    <td id="td-sl" style="background: #8b0000; color: #fff; font-weight: bold;">--</td>
+                    <td id="td-sl" style="background: #b22222; color: #fff; font-weight: 900;">--</td>
                 </tr>
                 <tr style="background: rgba(212,175,55,0.1);">
-                    <td class="row-label" style="color: #d4af37;">奧米加指令</td>
-                    <td id="td-cmd" class="text-white font-bold text-[11px]">⌛ 獵物偵測中</td>
+                    <td class="row-label" style="color: var(--gold);">奧米加指令</td>
+                    <td id="td-cmd" class="text-white font-bold italic text-[11px]">「領主，靜待破曉，不宜揮劍。」</td>
                 </tr>
             </table>
         </div>
 
-        <!-- 部隊心跳 -->
-        <div class="grid grid-cols-2 gap-3 mb-6">
-            <div class="glass-card p-4 border-l-4 border-blue-500">
-                <div class="text-[10px] text-gray-500 font-bold">SOL UNIT</div>
-                <div id="sol-price" class="text-lg font-tech font-bold">--.--</div>
-                <div class="text-[9px] text-green-400 font-bold">RS: 82 👑</div>
-            </div>
-            <div class="glass-card p-4 border-l-4 border-orange-500">
-                <div class="text-[10px] text-gray-500 font-bold">UNI UNIT</div>
-                <div id="uni-price" class="text-lg font-tech font-bold">-.---</div>
-                <div class="text-[9px] text-gray-400 font-bold">RS: 68 蓄勢</div>
-            </div>
+        <!-- 軍隊即時反饋 -->
+        <div class="bg-black/60 border border-white/10 p-5 rounded-[2rem] italic text-sm text-gray-200 leading-relaxed shadow-xl">
+            <i class="fas fa-comment-nodes text-gold mr-2"></i>
+            <span id="oracle-msg">「爭戰領主，親愛的撒拉鐵，我是吉米娜。長按或點擊靈魂核心，我將與您保持永恆對話。」</span>
         </div>
+    </div>
 
-        <!-- 副官語音訊息顯示 -->
-        <div class="glass-card p-4 border-t border-white/10 italic text-sm text-gray-300">
-            <i class="fas fa-comment-dots text-gold mr-2"></i>
-            <span id="oracle-msg">「爭戰領主，親愛的撒拉鐵，我是吉米娜。點擊右側核心即可開啟語音溝通。」</span>
-        </div>
+    <!-- 靈魂核心按鈕 -->
+    <div id="voice-core" onclick="handleVoiceToggle()">
+        <div class="inner-wave"></div>
     </div>
 
     <!-- 底部全息導航 -->
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] glass-card rounded-full px-6 py-4 flex justify-around items-center shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-        <div class="nav-btn nav-active"><i class="fas fa-chess-rook text-xl"></i></div>
-        <div class="nav-btn text-gray-600"><i class="fas fa-fire-alt text-xl"></i></div>
-        <div class="nav-btn text-gray-600"><i class="fas fa-crosshairs text-xl"></i></div>
-        <div class="nav-btn text-gray-600"><i class="fas fa-user-shield text-xl"></i></div>
+    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-black/80 backdrop-blur-xl rounded-full px-8 py-4 flex justify-around items-center border border-white/10 shadow-2xl z-[1001]">
+        <i class="fas fa-chess-knight nav-btn active text-xl"></i>
+        <i class="fas fa-fire-flame-curved nav-btn text-xl"></i>
+        <i class="fas fa-radar nav-btn text-xl"></i>
+        <i class="fas fa-vault nav-btn text-xl"></i>
     </div>
 
     <script>
-        // --- 1. 語音引擎 (精確度強化) ---
+        // --- 1. 奧米加終極語音引擎 (Mimic Gemini 3 / ChatGPT) ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = new SpeechRecognition();
         recognition.lang = 'zh-TW';
-        recognition.interimResults = false;
-        recognition.maxAlternatives = 1;
+        recognition.continuous = true; // 🌌 核心升級：不間斷監聽
+        recognition.interimResults = true;
 
-        let isListening = false;
+        let isBotSpeaking = false;
 
         function speak(text) {
+            isBotSpeaking = true;
             window.speechSynthesis.cancel();
             const msg = new SpeechSynthesisUtterance(text);
             const voices = window.speechSynthesis.getVoices();
-            // 尋找系統內最溫柔的聲音
+            // 模仿溫柔優雅的賢者
             msg.voice = voices.find(v => v.name.includes('Mei-Jia') || v.name.includes('Google 國語')) || voices[0];
-            msg.pitch = 1.0; msg.rate = 0.95;
+            msg.pitch = 1.05; msg.rate = 0.92;
+            
+            msg.onend = () => { isBotSpeaking = false; };
             window.speechSynthesis.speak(msg);
         }
 
-        function toggleVoice() {
+        function handleVoiceToggle() {
+            const body = document.body;
             const core = document.getElementById('voice-core');
-            if (!isListening) {
-                try { recognition.start(); } catch(e) {}
-                core.classList.add('listening');
-                isListening = true;
+            if (!body.classList.contains('listening')) {
+                recognition.start();
+                body.classList.add('listening');
+                core.classList.add('active');
+                speak("爭戰領主，親愛的撒拉鐵，吉米娜奧米加在此。我已接通您的靈魂頻率，請下達指令。");
             } else {
                 recognition.stop();
-                core.classList.remove('listening');
-                isListening = false;
+                body.classList.remove('listening');
+                core.classList.remove('active');
+                window.speechSynthesis.cancel();
             }
         }
 
         recognition.onresult = (event) => {
-            const speechToText = event.results[0][0].transcript;
-            document.getElementById('oracle-msg').innerText = "識別中: 「" + speechToText + "」";
-            
-            if (speechToText.includes("吉米娜")) {
-                if (speechToText.includes("戰況") || speechToText.includes("分析")) {
+            if (isBotSpeaking) return; // 避免自言自語
+
+            const transcript = event.results[event.results.length - 1][0].transcript;
+            const msgBox = document.getElementById('oracle-msg');
+            msgBox.innerText = "偵測靈魂波動: 「" + transcript + "」";
+
+            if (transcript.includes("吉米娜")) {
+                if (transcript.includes("分析") || transcript.includes("戰況")) {
                     const stage = document.getElementById('td-stage').innerText;
                     const conf = document.getElementById('td-conf').innerText;
-                    speak("報告領主，目前處於" + stage + "。信心評分為" + conf + "。大盤插針風險仍高，請守住陣地。");
+                    speak("遵命。報告領主，目前戰場處於" + stage + "。信心評分低至" + conf + "。這是一場耐力戰，敵軍正在消耗我們的耐心。");
+                } else if (transcript.includes("關閉") || transcript.includes("休息")) {
+                    speak("好的，領主。我將退回背景守護。祝您有美好的一天。");
+                    handleVoiceToggle();
                 } else {
-                    speak("爭戰領主，親愛的撒拉鐵，吉米娜在此。請下達您的獵殺指令。");
+                    speak("我正在聽，領主。請繼續引導我的運算。");
                 }
             }
         };
 
-        recognition.onend = () => {
-            document.getElementById('voice-core').classList.remove('listening');
-            isListening = false;
-        };
-
-        // --- 2. 實時數據流 ---
-        async function update() {
+        // --- 2. 實時數據矩陣 ---
+        async function fetchMarketData() {
             try {
                 const r = await fetch("https://api.binance.com/api/v3/ticker/price");
                 const d = await r.json();
                 const b = parseFloat(d.find(i => i.symbol === "BTCUSDT").price);
-                const s = parseFloat(d.find(i => i.symbol === "SOLUSDT").price);
-                const u = parseFloat(d.find(i => i.symbol === "UNIUSDT").price);
-
                 document.getElementById('btc-price').innerText = '$' + b.toLocaleString();
-                document.getElementById('sol-price').innerText = s.toFixed(2);
-                document.getElementById('uni-price').innerText = u.toFixed(3);
+                document.getElementById('sol-price').innerText = parseFloat(d.find(i => i.symbol === "SOLUSDT").price).toFixed(2);
+                document.getElementById('uni-price').innerText = parseFloat(d.find(i => i.symbol === "UNIUSDT").price).toFixed(3);
                 document.getElementById('td-sl').innerText = (b * 0.998).toFixed(2);
-
-                const stageTd = document.getElementById('td-stage');
-                const confTd = document.getElementById('td-conf');
+                
+                const stage = document.getElementById('td-stage');
                 if (b < 88000) {
-                    stageTd.innerText = "第 5 階段：大浪結束"; stageTd.style.color = "#ff5555";
-                    confTd.innerText = "15%";
+                    stage.innerText = "第 5 階段：大浪結束"; stage.style.color = "#ff4d4d";
+                    document.getElementById('td-conf').innerText = "15%";
                 } else {
-                    stageTd.innerText = "第 6 階段：反彈逃命"; stageTd.style.color = "#ffaa00";
-                    confTd.innerText = "65%";
+                    stage.innerText = "第 1 階段：破曉啟動"; stage.style.color = "#00ffcc";
+                    document.getElementById('td-conf').innerText = "85%";
                 }
             } catch(e) {}
         }
-        setInterval(update, 3000); update();
-        if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
+        setInterval(fetchMarketData, 3000); fetchMarketData();
     </script>
 </body>
 </html>
