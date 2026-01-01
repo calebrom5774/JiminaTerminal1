@@ -1,0 +1,15 @@
+{
+  "name": "吉米娜：神域終端",
+  "short_name": "吉米娜",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#d4af37",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2583/2583344.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

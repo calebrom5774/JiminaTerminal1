@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>神域戰略指揮部 V2.5</title>
+    <!-- PWA 符文連動 -->
+    <link rel="manifest" href="manifest.json">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { background-color: #050507; color: #d1d1d1; font-family: 'Inter', sans-serif; }
+        .oracle-glass { background: linear-gradient(135deg, rgba(15, 15, 20, 0.9), rgba(10, 10, 15, 0.95)); border: 1px solid rgba(212, 175, 55, 0.2); backdrop-filter: blur(15px); }
+        .gold-border { border-color: #d4af37; }
+        .text-gold { color: #d4af37; }
+        .bg-gold { background-color: #d4af37; }
+        .pulse-red { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        /* 安裝按鈕樣式 */
+        #install-btn { display: none; background: linear-gradient(to bottom, #d4af37, #b8860b); color: black; font-weight: 900; }
+    </style>
+</head>
+<body class="p-4 pb-24">
+
+    <!-- 安裝引導區 (僅在未安裝時出現) -->
+    <div id="install-banner" class="hidden oracle-glass p-4 rounded-xl mb-6 border-2 border-gold flex justify-between items-center">
+        <div>
+            <p class="text-xs font-bold text-gold">發現神域終端</p>
+            <p class="text-[10px] text-gray-400">是否將吉米娜部署至手機桌面？</p>
+        </div>
+        <button id="install-btn" class="px-4 py-2 rounded-lg text-xs uppercase">立即安裝</button>
+        <p id="ios-instruction" class="hidden text-[10px] text-gray-400 italic">請點擊瀏覽器 <i class="fas fa-share-square"></i> 選擇「加入主畫面」</p>
+    </div>
+
+    <!-- 原有 HUD 內容 (保持不變) -->
+    <div class="flex justify-between items-start mb-6">
+        <div>
+            <h1 class="text-2xl font-black tracking-tighter text-gold italic">JIMINA <span class="text-white">OMEGA</span></h1>
+            <div class="flex items-center gap-2 mt-1">
+                <span id="market-status" class="status-tag bg-red-900/50 text-red-400 border border-red-500/50 p-1 px-2 rounded text-[9px]">偵測中...</span>
+            </div>
+        </div>
+        <div class="text-right">
+            <div id="btc-price" class="text-lg font-mono font-bold text-white">------</div>
+            <div class="text-[10px] text-gray-500">BTC/USDT LIVE</div>
+        </div>
+    </div>
+
+    <!-- 信心評分面板 -->
+    <div class="oracle-glass rounded-2xl p-5 mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-xs font-bold tracking-widest text-gray-400">奧米加信心評分</span>
+            <span id="confidence-score" class="text-4xl font-black text-gold">--%</span>
+        </div>
+        <div class="w-full bg-gray-900 h-2 rounded-full overflow-hidden">
+            <div id="confidence-bar" class="h-full bg-gold transition-all duration-1000" style="width: 0%"></div>
+        </div>
+    </div>
+
+    <!-- 指令區 -->
+    <div class="oracle-glass p-5 rounded-2xl border-t-2 gold-border">
+        <p id="oracle-msg" class="text-sm italic text-gray-300 leading-relaxed">
+            神域校準中...
+        </p>
+    </div>
+
+    <script>
+        // --- 1. PWA 安裝邏輯模組 ---
+        let deferredPrompt;
+        const installBanner = document.getElementById('install-banner');
+        const installBtn = document.getElementById('install-btn');
+        const iosMsg = document.getElementById('ios-instruction');
+
+        // 偵測 iOS
+        const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIos && !window.navigator.standalone) {
+            installBanner.classList.remove('hidden');
+            iosMsg.classList.remove('hidden');
+        }
+
+        // 偵測 Android / Chrome 安裝事件
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.classList.remove('hidden');
+            installBtn.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBanner.classList.add('hidden');
+                deferredPrompt = null;
+            }
+        });
+
+        // 註冊 Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+
+        // --- 2. 行情連線模組 (同 V2.0) ---
+        async function fetchPrices() {
+            try {
+                const res = await fetch("https://api.binance.com/api/v3/ticker/price");
+                const data = await res.json();
+                const btc = data.find(i => i.symbol === "BTCUSDT").price;
+                document.getElementById('btc-price').innerText = '$' + parseFloat(btc).toLocaleString();
+                updateUI(btc);
+            } catch (e) {}
+        }
+
+        function updateUI(btc) {
+            let conf = btc > 88500 ? 85 : 15;
+            document.getElementById('confidence-score').innerText = conf + "%";
+            document.getElementById('confidence-bar').style.width = conf + "%";
+            document.getElementById('oracle-msg').innerText = btc > 88500 ? "「領主，大盤重回強勢區。SOL 正處於第 1 階段。請下令全軍進攻！」" : "「偵測到敵方高頻插針。請嚴守 114.80 防線，目前禁止任何輕舉妄動。」";
+            const status = document.getElementById('market-status');
+            status.innerText = btc > 88500 ? "☀️ 神域掌握期" : "⛈️ 敵方洗盤期";
+        }
+
+        setInterval(fetchPrices, 3000);
+        fetchPrices();
+    </script>
+</body>
+</html>
