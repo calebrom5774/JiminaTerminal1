@@ -9,166 +9,96 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Inter:wght@300;600;900&display=swap');
-        body { background-color: #050507; color: #d1d1d1; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { 
+            background: #050507; 
+            color: #d1d1d1; 
+            font-family: 'Inter', sans-serif; 
+            background-image: linear-gradient(rgba(5, 5, 7, 0.85), rgba(5, 5, 7, 0.95)), url('icon.png');
+            background-size: cover;
+            background-position: center top;
+            background-attachment: fixed;
+        }
         .font-tech { font-family: 'Orbitron', sans-serif; }
-        .oracle-glass { background: linear-gradient(135deg, rgba(20, 20, 30, 0.95), rgba(10, 10, 15, 0.98)); border: 1px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(20px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .gold-glow { text-shadow: 0 0 10px rgba(212, 175, 55, 0.5); }
-        .status-tag { font-size: 10px; padding: 3px 8px; border-radius: 6px; font-weight: 900; letter-spacing: 1px; }
-        .progress-container { height: 10px; background: #1a1a20; border-radius: 5px; overflow: hidden; border: 1px solid #333; }
-        .progress-bar { height: 100%; width: 10.2%; background: linear-gradient(90deg, #b8860b, #d4af37, #f1c40f); box-shadow: 0 0 15px #d4af37; transition: width 1.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
-        .unit-card { border-left: 4px solid #d4af37; transition: transform 0.3s; }
-        .unit-card:active { transform: scale(0.98); }
+        .oracle-glass { background: rgba(15, 15, 25, 0.7); border: 1px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(12px); }
+        .progress-bar { height: 100%; width: 10.2%; background: linear-gradient(90deg, #b8860b, #d4af37, #f1c40f); box-shadow: 0 0 15px #d4af37; transition: width 1.5s ease-in-out; }
     </style>
 </head>
 <body class="p-4 pb-28">
 
     <!-- Header -->
-    <div class="flex justify-between items-start mb-6 pt-2">
+    <div class="flex justify-between items-start mb-6 pt-4">
         <div>
-            <h1 class="text-2xl font-black font-tech text-[#d4af37] tracking-tighter italic">JIMINA <span class="text-white">OMEGA</span></h1>
-            <div id="market-status" class="status-tag mt-2 bg-red-900/40 text-red-400 border border-red-500/50 inline-block animate-pulse">敵方洗盤期</div>
+            <h1 class="text-2xl font-black font-tech text-[#d4af37] tracking-tighter italic gold-glow">JIMINA <span class="text-white">OMEGA</span></h1>
+            <div id="market-status" class="text-[10px] mt-2 bg-red-900/40 text-red-400 border border-red-500/50 px-2 py-1 rounded inline-block animate-pulse">敵方洗盤期</div>
         </div>
         <div class="text-right">
-            <div id="btc-price" class="text-xl font-tech font-bold text-white leading-none">------</div>
-            <div class="text-[10px] text-gray-500 mt-1 uppercase font-bold tracking-widest">BTC/USDT Oracle</div>
+            <div id="btc-price" class="text-xl font-tech font-bold text-white">------</div>
+            <div class="text-[10px] text-gray-500 uppercase font-bold tracking-widest">BTC LIVE</div>
         </div>
     </div>
 
-    <!-- 霸業進度面板 -->
-    <div class="oracle-glass rounded-2xl p-5 mb-6">
+    <!-- 霸業面板 -->
+    <div class="oracle-glass rounded-2xl p-5 mb-6 border-t-2 border-[#d4af37]">
         <div class="flex justify-between items-end mb-3">
-            <span class="text-xs font-bold text-gray-400 tracking-widest">1000U 千金霸業進度</span>
+            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-[0.2em]">1000U Progress</span>
             <span class="text-3xl font-black font-tech text-[#d4af37]">10.2%</span>
         </div>
-        <div class="progress-container">
+        <div class="h-2 bg-black/50 rounded-full overflow-hidden border border-white/10">
             <div class="progress-bar"></div>
         </div>
-        <div class="flex justify-between mt-3 text-[10px] font-bold">
-            <span class="text-gray-500">START: 100U</span>
-            <span class="text-white tracking-widest">VALUATION: 102.11 USDT</span>
-        </div>
     </div>
 
-    <!-- 資源儀表板 -->
+    <!-- 資源區 -->
     <div class="grid grid-cols-2 gap-4 mb-6">
-        <div class="oracle-glass p-4 rounded-2xl text-center">
-            <span class="text-[10px] text-gray-500 block mb-1 font-bold uppercase">奧米加軍火庫</span>
-            <span class="text-2xl font-tech font-bold text-white">23.93</span>
-            <span class="text-[10px] text-blue-400 block font-bold">流動盾牌</span>
+        <div class="oracle-glass p-4 rounded-2xl text-center border-b-2 border-blue-500/50">
+            <span class="text-[9px] text-gray-500 block mb-1 font-bold">奧米加軍火庫</span>
+            <span class="text-xl font-tech font-bold text-white">23.93</span>
         </div>
-        <div class="oracle-glass p-4 rounded-2xl text-center">
-            <span class="text-[10px] text-gray-500 block mb-1 font-bold uppercase">已配對糧草</span>
-            <span class="text-2xl font-tech font-bold text-green-400">+2.11</span>
-            <span class="text-[10px] text-green-600 block font-bold">REALIZED</span>
+        <div class="oracle-glass p-4 rounded-2xl text-center border-b-2 border-green-500/50">
+            <span class="text-[9px] text-gray-500 block mb-1 font-bold">已配對糧草</span>
+            <span class="text-xl font-tech font-bold text-green-400">+2.11</span>
         </div>
     </div>
 
-    <!-- 部隊動態看板 -->
-    <h2 class="text-[10px] font-black text-gray-600 mb-4 tracking-[0.2em] uppercase ml-1">當前部署部隊 (實時心跳)</h2>
-    <div class="space-y-4 mb-8">
-        <!-- SOL Unit -->
-        <div class="oracle-glass unit-card p-4 rounded-2xl flex justify-between items-center">
-            <div class="flex-1">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span class="font-black text-sm tracking-tight">SOLUSDT</span>
-                    <span class="text-[9px] font-bold bg-blue-900/30 text-blue-300 px-2 py-0.5 rounded">8x LONG</span>
-                </div>
-                <div class="grid grid-cols-2 mt-2 gap-2 text-[10px] text-gray-500">
-                    <div>強平: 38.07</div>
-                    <div>止損: <span class="text-red-400 font-bold">114.80</span></div>
-                </div>
-            </div>
-            <div class="text-right">
-                <div id="sol-price" class="text-lg font-tech font-bold text-white">---.--</div>
-                <div id="sol-profit" class="text-[10px] font-bold text-red-500">-0.42 U</div>
-            </div>
+    <!-- 即時指令 -->
+    <div class="oracle-glass p-6 rounded-3xl border-l-4 border-[#d4af37]">
+        <div class="flex items-center gap-2 mb-3">
+            <i class="fas fa-scroll text-[#d4af37] text-xs"></i>
+            <span class="text-[10px] font-black text-[#d4af37] tracking-[0.3em] uppercase">神域全息指令</span>
         </div>
-
-        <!-- UNI Unit -->
-        <div class="oracle-glass unit-card p-4 rounded-2xl flex justify-between items-center border-l-orange-500">
-            <div class="flex-1">
-                <div class="flex items-center gap-2">
-                    <div class="w-2 h-2 bg-orange-500 rounded-full shadow-[0_0_5px_#f97316]"></div>
-                    <span class="font-black text-sm tracking-tight">UNIUSDT</span>
-                    <span class="text-[9px] font-bold bg-orange-900/30 text-orange-300 px-2 py-0.5 rounded">5x LONG</span>
-                </div>
-                <div class="grid grid-cols-2 mt-2 gap-2 text-[10px] text-gray-500">
-                    <div>下限: 5.55</div>
-                    <div>止損: <span class="text-red-400 font-bold">4.95</span></div>
-                </div>
-            </div>
-            <div class="text-right">
-                <div id="uni-price" class="text-lg font-tech font-bold text-white">-.---</div>
-                <div id="uni-profit" class="text-[10px] font-bold text-red-500">-2.37 U</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- AI 戰略指令 -->
-    <div class="oracle-glass p-5 rounded-3xl relative overflow-hidden">
-        <div class="absolute top-0 right-0 p-4 opacity-10">
-            <i class="fas fa-brain text-5xl"></i>
-        </div>
-        <div class="flex items-center gap-2 mb-4">
-            <span class="text-[10px] font-black text-[#d4af37] tracking-widest uppercase">奧米加全息指令</span>
-        </div>
-        <p id="oracle-msg" class="text-sm italic text-gray-200 leading-relaxed font-medium">
-            偵測到大盤洗盤壓力，請領主嚴守 114.80 關鍵防線。
+        <p id="oracle-msg" class="text-sm italic text-gray-100 leading-relaxed">
+            「領主，目前大盤深陷第 5 階段。敵方正在獵殺止損，請嚴守防線，不准輕舉妄動。」
         </p>
-        <div class="mt-6 pt-4 border-t border-white/5 grid grid-cols-3 gap-2 text-center">
-            <div class="text-[9px] text-gray-500">奧米加信心<br><span id="conf-val" class="text-[#d4af37] font-bold">15%</span></div>
-            <div class="text-[9px] text-gray-500">RS領袖<br><span class="text-green-400 font-bold">SOL(82)</span></div>
-            <div class="text-[9px] text-gray-500">情緒階段<br><span class="text-red-400 font-bold">Stage 5</span></div>
-        </div>
     </div>
 
-    <!-- Bottom Navbar -->
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] glass oracle-glass rounded-full px-8 py-4 flex justify-around items-center border border-white/10">
-        <i class="fas fa-home text-[#d4af37] text-lg"></i>
-        <i class="fas fa-bolt text-gray-600 text-lg"></i>
-        <i class="fas fa-shield-halved text-gray-600 text-lg"></i>
-        <i class="fas fa-dna text-gray-600 text-lg"></i>
+    <!-- 導航選單 -->
+    <div class="fixed bottom-8 left-1/2 -translate-x-1/2 w-[85%] oracle-glass rounded-full px-8 py-4 flex justify-around items-center border border-white/20">
+        <i class="fas fa-home text-[#d4af37] text-xl"></i>
+        <i class="fas fa-skull-crossbones text-gray-600 text-xl"></i>
+        <i class="fas fa-shield-halved text-gray-600 text-xl"></i>
     </div>
 
     <script>
-        const BINANCE_API = "https://api.binance.com/api/v3/ticker/price";
-        
-        async function updatePrices() {
+        async function update() {
             try {
-                const response = await fetch(BINANCE_API);
-                const data = await response.json();
-                
+                const res = await fetch("https://api.binance.com/api/v3/ticker/price");
+                const data = await res.json();
                 const btc = parseFloat(data.find(i => i.symbol === "BTCUSDT").price);
-                const sol = parseFloat(data.find(i => i.symbol === "SOLUSDT").price);
-                const uni = parseFloat(data.find(i => i.symbol === "UNIUSDT").price);
-
                 document.getElementById('btc-price').innerText = '$' + btc.toLocaleString();
-                document.getElementById('sol-price').innerText = sol.toFixed(2);
-                document.getElementById('uni-price').innerText = uni.toFixed(3);
-
-                // 動態邏輯判斷
                 const status = document.getElementById('market-status');
                 const msg = document.getElementById('oracle-msg');
-                const conf = document.getElementById('conf-val');
-
                 if (btc < 88000) {
                     status.innerText = "敵方洗盤期";
-                    status.classList.add('text-red-400');
-                    msg.innerText = "「領主，目前大盤正處於第 5 階段：大浪結束。敵方正在獵殺槓桿單，請嚴守 4.95 止損，不準輕舉妄動。」";
-                    conf.innerText = "15%";
+                    msg.innerText = "「領主，暴雪未停。敵方正在 87,000 區間伏擊，請讓部隊保持靜默。」";
                 } else {
                     status.innerText = "結構修復期";
-                    status.classList.remove('text-red-400');
-                    msg.innerText = "「大盤試圖站穩 88,500。偵測到 SOL 有 Delta 買盤承接。指揮官，請靜待 126.50 的突擊信號。」";
-                    conf.innerText = "65%";
+                    msg.innerText = "「大盤試圖奪回生命線。撒拉鐵領主，請擦亮您的巨劍，破曉將至。」";
                 }
-            } catch (e) { console.log("神域干擾..."); }
+            } catch (e) {}
         }
-
+        setInterval(update, 3000);
+        update();
         if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }
-        setInterval(updatePrices, 3000);
-        updatePrices();
     </script>
 </body>
 </html>
