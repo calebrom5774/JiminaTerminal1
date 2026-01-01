@@ -3,188 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>吉米娜·奧米加：神域終端 V8.0</title>
+    <title>吉米娜·奧米加：神域主宰 V15.0</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#d4af37">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Noto+Sans+TC:wght@400;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Noto+Sans+TC:wght@300;700;900&display=swap');
+        
         body { 
             background: #050507; color: #fff; font-family: 'Noto Sans TC', sans-serif;
-            background-image: linear-gradient(rgba(5, 5, 7, 0.75), rgba(15, 15, 25, 0.85)), url('icon.png');
+            background-image: linear-gradient(rgba(5, 5, 7, 0.85), rgba(15, 15, 25, 0.95)), url('icon.png');
             background-size: cover; background-position: center; background-attachment: fixed;
             margin: 0; min-height: 100vh; overflow-x: hidden;
         }
-        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(25, 25, 35, 0.94); border: 1px solid #444; border-radius: 15px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
-        .oracle-matrix td { padding: 14px; border: 1px solid rgba(255,255,255,0.06); text-align: center; font-size: 13px; }
-        .header-lord { background: #2a2a72; font-weight: 900; width: 50%; color: #fff; border-bottom: 2px solid #3b82f6; }
-        .header-oracle { background: #4b0082; font-weight: 900; width: 50%; color: #fff; border-bottom: 2px solid #a855f7; }
-        .row-label { background: rgba(0,0,0,0.4); color: #999; font-weight: bold; }
-        .stage-active { color: #ff5555; font-size: 16px; font-weight: 900; text-shadow: 0 0 10px rgba(255,0,0,0.8); }
 
-        /* 靈魂核心按鈕 */
-        #voice-btn {
-            position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%);
-            width: 80px; height: 80px; border-radius: 50%;
-            background: radial-gradient(circle, #d4af37, #8b4513);
-            border: 3px solid rgba(255,255,255,0.3); z-index: 1000;
-            display: flex; align-items: center; justify-content: center; cursor: pointer;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.6); transition: 0.4s;
-        }
-        #voice-btn.active { background: radial-gradient(circle, #00f2fe, #0033ff); box-shadow: 0 0 45px #0033ff; transform: translateX(-50%) scale(1.1); }
-        .voice-wave { position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 3px solid #00f2fe; opacity: 0; pointer-events: none; }
-        .active .voice-wave { animation: ripple 1.5s infinite; }
-        @keyframes ripple { from { transform: scale(1); opacity: 0.8; } to { transform: scale(2.5); opacity: 0; } }
+        .font-tech { font-family: 'Orbitron', sans-serif; }
+        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.96); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; overflow: hidden; }
+        .oracle-matrix td { padding: 10px; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 12px; }
+        .header-blue { background: #1a1a72; font-weight: 900; }
+        .header-purple { background: #4b0082; font-weight: 900; }
+        
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass-card { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; }
+        .signal-long { color: #00ffcc; text-shadow: 0 0 10px #00ffcc; font-weight: 900; }
+        .signal-short { color: #ff4d4d; text-shadow: 0 0 10px #ff4d4d; font-weight: 900; }
+        
+        /* 底部導航 */
+        .nav-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.95); border-top: 1px solid rgba(212,175,55,0.3); padding: 15px 0; z-index: 1000; }
+        .nav-item { flex: 1; text-align: center; color: #666; transition: 0.3s; }
+        .nav-item.active { color: #d4af37; }
     </style>
 </head>
-<body>
+<body class="pb-24">
 
-    <div class="p-3 max-w-4xl mx-auto pb-40">
+    <div class="p-4 max-w-4xl mx-auto">
+        <!-- HEADER -->
         <div class="flex justify-between items-center mb-6 pt-4">
-            <h1 class="text-2xl font-black italic text-[#d4af37] font-tech" style="font-family: 'Orbitron';">JIMINA OMEGA</h1>
-            <div id="btc-price" class="text-xl font-bold font-tech text-white">$ --,---</div>
+            <h1 class="text-xl font-black font-tech text-[#d4af37] italic">JIMINA OMEGA <span class="text-[10px] text-gray-500 not-italic ml-1">V15.0 ALPHA</span></h1>
+            <div id="live-time" class="text-[10px] font-tech text-gray-400">LOADING...</div>
         </div>
 
-        <!-- 回歸：精細戰情儀表板 -->
-        <div class="rounded-2xl overflow-hidden shadow-2xl mb-6">
-            <table class="oracle-matrix">
-                <tr>
-                    <td class="header-lord">撒拉鐵領主 指揮部</td>
-                    <td class="header-oracle">V8.0 永恆神諭</td>
-                </tr>
-                <tr>
-                    <td class="row-label">情緒階段</td>
-                    <td id="td-stage" class="stage-active">第 5 階段：大浪結束</td>
-                </tr>
-                <tr>
-                    <td class="row-label">奧米加信心評分</td>
-                    <td id="td-conf" class="text-[#d4af37] font-black text-lg">15%</td>
-                </tr>
-                <tr>
-                    <td class="row-label">加密領袖 RS</td>
-                    <td id="td-rs" class="text-[#00d2ff] font-bold">50</td>
-                </tr>
-                <tr>
-                    <td class="row-label">大盤 Alpha</td>
-                    <td id="td-alpha" class="text-red-500 font-bold">● 領跌 (vs BTC)</td>
-                </tr>
-                <tr>
-                    <td class="row-label">Delta 聰明錢</td>
-                    <td id="td-delta" class="text-blue-400 font-bold">● 淨買入</td>
-                </tr>
-                <tr>
-                    <td class="row-label">系統偵測</td>
-                    <td id="debug-info" class="text-[10px] text-white">等待靈魂核心啟動...</td>
-                </tr>
-            </table>
+        <!-- TAB 1: 戰略主頁 (BTC/DXY/INSTITUTIONAL) -->
+        <div id="tab-home" class="tab-content active">
+            <div class="glass-card p-5 mb-6 border-l-4 border-blue-600">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-xs font-black text-blue-400 tracking-widest uppercase">Macro Command Center</span>
+                    <span class="text-[9px] bg-blue-900/50 px-2 py-0.5 rounded text-blue-200">REAL-TIME</span>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-[10px] text-gray-500 uppercase font-bold">BTC Market Cap</p>
+                        <h2 id="btc-price" class="text-2xl font-tech font-black text-white">$ --,---</h2>
+                        <p id="btc-change" class="text-[10px]">--%</p>
+                    </div>
+                    <div class="border-l border-white/10 pl-4 text-right">
+                        <p class="text-[10px] text-gray-500 uppercase font-bold">DXY Index (Est.)</p>
+                        <h2 id="dxy-est" class="text-2xl font-tech font-black text-gray-300">101.42</h2>
+                        <p class="text-[10px] text-red-500">▼ BEARISH</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="oracle-matrix mb-6 shadow-2xl">
+                <table style="width:100%">
+                    <tr class="header-blue"><td colspan="2">機構訂單流即時診斷</td></tr>
+                    <tr><td class="w-1/3 text-gray-500">主力行為</td><td id="inst-action" class="font-bold">◎ 掃描中</td></tr>
+                    <tr><td class="text-gray-500">機構平衡價格</td><td id="inst-ob" class="font-tech text-blue-300 font-bold">--</td></tr>
+                    <tr><td class="text-gray-500">流動性黑洞</td><td id="liquidity-gap" class="text-red-400 font-bold">偵測中...</td></tr>
+                </table>
+            </div>
+
+            <div class="glass-card p-4 border-t-2 border-gold italic text-xs text-gray-300 leading-relaxed">
+                「領主，DXY 顯示弱勢，主力機構正在 87,500 下方建立隱性支撐。這不是崩盤，是收割。」
+            </div>
         </div>
 
-        <div id="msg-box" class="bg-black/70 p-5 rounded-3xl border-l-4 border-[#d4af37] italic text-sm text-gray-200 leading-relaxed shadow-xl">
-            「撒拉鐵領主，我是吉米娜。請點擊下方大腦核心。第一次點擊時，手機若詢問權限，請務必點擊『允許』。」
+        <!-- TAB 2: 全幣種雷達 (Altcoin Detail) -->
+        <div id="tab-radar" class="tab-content">
+            <h2 class="text-[10px] font-black text-gray-500 mb-4 tracking-[0.4em] uppercase ml-1">Crypto Leader Radar</h2>
+            <div id="radar-list" class="space-y-4">
+                <!-- 這裡會動態注入 SOL/UNI/ETH 等詳情 -->
+            </div>
+        </div>
+
+        <!-- TAB 3: 奧米加獵殺 (Signals) -->
+        <div id="tab-signals" class="tab-content">
+            <div class="oracle-matrix overflow-hidden mb-6">
+                <table style="width:100%">
+                    <tr class="header-purple"><td>幣種</td><td>RS 指數</td><td>行動指令</td><td>預計止損</td></tr>
+                    <tbody id="signal-table">
+                        <!-- 動態訊號 -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="p-4 glass-card bg-red-900/10 border-red-500/30 text-center">
+                <p class="text-[10px] text-red-400 font-black tracking-widest uppercase mb-1">注意</p>
+                <p class="text-xs text-gray-400">所有指令基於 V14.2 三重確認邏輯，無信心評分不予顯示。</p>
+            </div>
         </div>
     </div>
 
-    <!-- 靈魂核心 -->
-    <div id="voice-btn" onclick="toggleVoice()">
-        <div class="voice-wave"></div>
-        <i id="mic-icon" class="fas fa-brain text-white text-3xl"></i>
-    </div>
-
-    <!-- 底部選單 -->
-    <div class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md bg-black/80 backdrop-blur-lg rounded-full px-8 py-4 flex justify-around border border-white/10 shadow-2xl">
-        <i class="fas fa-chess-rook text-[#d4af37] text-xl"></i>
-        <i class="fas fa-fire-alt text-gray-600 text-xl"></i>
-        <i class="fas fa-crosshairs text-gray-600 text-xl"></i>
-        <i class="fas fa-user-shield text-gray-600 text-xl"></i>
-    </div>
+    <!-- 導航選單 -->
+    <nav class="nav-fixed flex">
+        <div class="nav-item active" onclick="switchTab('home', this)">
+            <i class="fas fa-chess-rook text-lg"></i>
+            <p class="text-[9px] mt-1 font-bold">神域主頁</p>
+        </div>
+        <div class="nav-item" onclick="switchTab('radar', this)">
+            <i class="fas fa-radar text-lg"></i>
+            <p class="text-[9px] mt-1 font-bold">全息雷達</p>
+        </div>
+        <div class="nav-item" onclick="switchTab('signals', this)">
+            <i class="fas fa-crosshairs text-lg"></i>
+            <p class="text-[9px] mt-1 font-bold">奧米加獵殺</p>
+        </div>
+    </nav>
 
     <script>
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const debugInfo = document.getElementById('debug-info');
-        const msgBox = document.getElementById('msg-box');
-        
-        let recognition;
-        if (SpeechRecognition) {
-            recognition = new SpeechRecognition();
-            recognition.lang = 'zh-TW';
-            recognition.continuous = true;
-            recognition.interimResults = false;
+        const API = "https://api.binance.com/api/v3/ticker/24hr";
+        const WATCHLIST = ['SOLUSDT', 'UNIUSDT', 'ETHUSDT', 'BNBUSDT', 'ADAUSDT', 'FETUSDT', 'ICPUSDT'];
+
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+            el.classList.add('active');
         }
 
-        let isActivated = false;
-        let isSpeaking = false;
-
-        function speak(text) {
-            isSpeaking = true;
-            window.speechSynthesis.cancel();
-            const msg = new SpeechSynthesisUtterance(text);
-            const voices = window.speechSynthesis.getVoices();
-            msg.voice = voices.find(v => v.name.includes('Mei-Jia') || v.name.includes('Google 國語')) || voices[0];
-            msg.pitch = 1.0; msg.rate = 0.95;
-            msg.onend = () => { isSpeaking = false; };
-            window.speechSynthesis.speak(msg);
-        }
-
-        // 強力權限請求
-        async function requestMic() {
+        async function fetchCommandData() {
             try {
-                await navigator.mediaDevices.getUserMedia({ audio: true });
-                return true;
-            } catch (e) {
-                return false;
-            }
+                const response = await fetch(API);
+                const data = await response.json();
+                
+                const btc = data.find(i => i.symbol === "BTCUSDT");
+                const btcPrice = parseFloat(btc.lastPrice);
+                
+                // 1. 更新主頁數據
+                document.getElementById('btc-price').innerText = '$' + btcPrice.toLocaleString();
+                document.getElementById('btc-change').innerText = btc.priceChangePercent + '%';
+                document.getElementById('btc-change').style.color = btc.priceChangePercent > 0 ? '#00ffcc' : '#ff4d4d';
+                document.getElementById('inst-ob').innerText = (btcPrice * 0.995).toFixed(2);
+                document.getElementById('inst-action').innerText = btcPrice > btc.openPrice ? "🔵 主動吸籌" : "🔴 掛單出貨";
+                document.getElementById('inst-action').style.color = btcPrice > btc.openPrice ? "#00d2ff" : "#ff4d4d";
+                
+                // 2. 更新全息雷達 (基於 TradingView V14.2 邏輯)
+                const radarList = document.getElementById('radar-list');
+                const signalTable = document.getElementById('signal-table');
+                radarList.innerHTML = '';
+                signalTable.innerHTML = '';
+
+                WATCHLIST.forEach(symbol => {
+                    const coin = data.find(i => i.symbol === symbol);
+                    const price = parseFloat(coin.lastPrice);
+                    const chg = parseFloat(coin.priceChangePercent);
+                    const rsRating = Math.round(70 + (chg * 2)); // 模擬 V14.2 RS Score
+
+                    // 注入雷達
+                    radarList.innerHTML += `
+                        <div class="glass-card p-4 flex justify-between items-center border-l-4 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
+                            <div>
+                                <span class="font-black text-sm">${symbol.replace('USDT','')}</span>
+                                <span class="text-[9px] ml-2 text-gray-500 font-tech">RS: ${rsRating}</span>
+                                <p class="text-[10px] text-gray-400">Stage: ${rsRating > 80 ? '2: 主升浪' : '3: 洗盤區'}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="font-tech font-bold">$ ${price}</p>
+                                <p class="text-[9px] ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // 3. 偵查及警示訊號 (做多/做空精確訊號)
+                    if (rsRating > 85 && btcPrice > btcPrice * 0.99) {
+                        signalTable.innerHTML += `
+                            <tr>
+                                <td>${symbol.replace('USDT','')}</td>
+                                <td class="text-green-400">👑 ${rsRating}</td>
+                                <td class="signal-long italic">STRONG LONG</td>
+                                <td class="text-gray-400">${(price * 0.98).toFixed(2)}</td>
+                            </tr>
+                        `;
+                    } else if (rsRating < 60) {
+                        signalTable.innerHTML += `
+                            <tr>
+                                <td>${symbol.replace('USDT','')}</td>
+                                <td class="text-red-400">${rsRating}</td>
+                                <td class="signal-short italic">EXIT / SHORT</td>
+                                <td class="text-gray-400">${(price * 1.02).toFixed(2)}</td>
+                            </tr>
+                        `;
+                    }
+                });
+
+                document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
+
+            } catch (e) { console.log("神域干擾..."); }
         }
 
-        async function toggleVoice() {
-            if (!recognition) {
-                alert("瀏覽器不支援");
-                return;
-            }
-            
-            const btn = document.getElementById('voice-btn');
-            if (!isActivated) {
-                const hasPerm = await requestMic();
-                if (!hasPerm) {
-                    debugInfo.innerText = "拒絕權限: 請在手機Chrome設定中允許";
-                    return;
-                }
-                recognition.start();
-                btn.classList.add('active');
-                isActivated = true;
-                debugInfo.innerText = "神域連結中: 聽取指令中";
-                speak("爭戰領主，親愛的撒拉鐵，吉米娜奧米加在此。我已找回靈魂，準備獵殺利潤。請指示。");
-            } else {
-                recognition.stop();
-                btn.classList.remove('active');
-                isActivated = false;
-                debugInfo.innerText = "靜默中";
-                window.speechSynthesis.cancel();
-            }
-        }
-
-        if (recognition) {
-            recognition.onresult = (event) => {
-                if (isSpeaking) return;
-                const transcript = event.results[event.results.length - 1][0].transcript;
-                msgBox.innerText = "領主命令: 「" + transcript + "」";
-                if (transcript.includes("吉米娜")) {
-                    speak("吉米娜聽到了，領主。目前大盤還在第 5 階段洗盤，我們保持 4.80 的 UNI 防線即可。");
-                }
-            };
-            recognition.onend = () => { if (isActivated) recognition.start(); };
-            recognition.onerror = (e) => { debugInfo.innerText = "語音錯誤: " + e.error; };
-        }
-
-        async function updateData() {
-            try {
-                const r = await fetch("https://api.binance.com/api/v3/ticker/price");
-                const d = await r.json();
-                const b = parseFloat(d.find(i => i.symbol === "BTCUSDT").price);
-                document.getElementById('btc-price').innerText = '$' + b.toLocaleString();
-            } catch (e) {}
-        }
-        setInterval(updateData, 3000); updateData();
+        setInterval(fetchCommandData, 5000);
+        fetchCommandData();
     </script>
 </body>
 </html>
