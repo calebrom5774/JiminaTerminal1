@@ -1,10 +1,6 @@
 {
-  "name": "吉米娜：神域終端",
+  "name": "吉米娜：神域指揮部",
   "short_name": "吉米娜",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#050507",
-  "theme_color": "#d4af37",
   "icons": [
     {
       "src": "icon.png",
@@ -16,5 +12,10 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
-}
+  ],
+  "start_url": "/JiminaTerminal1/index.html",
+  "display": "standalone",
+  "background_color": "#050507",
+  "theme_color": "#d4af37",
+  "scope": "/JiminaTerminal1/"
+} 
