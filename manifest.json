@@ -13,9 +13,9 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/JiminaTerminal1/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#050507",
   "theme_color": "#d4af37",
-  "scope": "/JiminaTerminal1/"
-} 
+  "scope": "./"
+}
