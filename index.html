@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>吉米娜·奧米加 V15.3</title>
+    <title>吉米娜·奧米加 V15.4</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#d4af37">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -13,69 +13,67 @@
         
         body, html { 
             background: #050507; color: #fff; font-family: 'Noto Sans TC', sans-serif;
-            margin: 0; padding: 0; height: 100vh; overflow: hidden;
+            margin: 0; padding: 0; height: 100vh; width: 100vw; overflow: hidden;
         }
 
-        /* 🏰 戰爭背景 */
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(5, 5, 7, 0.85), rgba(15, 15, 25, 0.95)), url('icon.png');
+            background-image: linear-gradient(rgba(5, 5, 7, 0.88), rgba(15, 15, 25, 0.96)), url('icon.png');
             background-size: cover; background-position: center; z-index: -1;
         }
 
-        /* 🚀 核心：修復滑動容器 */
-        .swipe-wrapper {
+        /* 🚀 核心：左右滑動容器 */
+        .swipe-container {
             display: flex; width: 300vw; height: 100vh;
             overflow-x: auto; scroll-snap-type: x mandatory;
             scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-            touch-action: pan-x;
+            touch-action: pan-x; will-change: scroll-position;
         }
-        .swipe-wrapper::-webkit-scrollbar { display: none; }
+        .swipe-container::-webkit-scrollbar { display: none; }
         
         .page {
             width: 100vw; height: 100vh; scroll-snap-align: start;
-            flex-shrink: 0; overflow-y: auto; padding: 20px 15px 120px 15px;
+            flex-shrink: 0; overflow-y: auto; padding: 15px 15px 120px 15px;
             box-sizing: border-box;
         }
 
         .font-tech { font-family: 'Orbitron', sans-serif; }
-        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.98); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 12px; overflow: hidden; }
+        .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.95); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; overflow: hidden; }
         .oracle-matrix td { padding: 12px 5px; border: 1px solid rgba(255,255,255,0.03); text-align: center; font-size: 12px; }
 
-        .glass-card { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.1); border-radius: 15px; margin-bottom: 15px; }
+        .glass-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; margin-bottom: 12px; }
         
-        /* 底部導航 */
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.98); border-top: 1px solid rgba(212,175,55,0.4); padding: 12px 0; z-index: 2000; display: flex; }
+        /* 導航 */
+        .nav-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(8,8,12,0.98); border-top: 1px solid rgba(212,175,55,0.4); padding: 10px 0; z-index: 2000; display: flex; }
         .nav-item { flex: 1; text-align: center; color: #444; font-size: 10px; font-weight: 900; }
         .nav-item.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
 
-        .badge-long { background: #00ffcc; color: #000; padding: 2px 5px; border-radius: 4px; font-weight: 900; }
-        .badge-short { background: #ff4d4d; color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 900; }
+        .badge-long { background: #00ffcc; color: #000; padding: 2px 5px; border-radius: 4px; font-weight: 900; font-size: 10px; }
+        .badge-short { background: #ff4d4d; color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 900; font-size: 10px; }
     </style>
 </head>
 <body>
 
     <div class="bg-layer"></div>
 
-    <!-- 滑動主體 -->
-    <div class="swipe-wrapper" id="swiper">
+    <div class="swipe-container" id="swiper">
         
         <!-- PAGE 1: 神域主頁 -->
-        <div class="page" id="home">
-            <div class="flex justify-between items-center mb-6 pt-4">
-                <h1 class="text-xl font-black font-tech text-[#d4af37] italic gold-glow">JIMINA OMEGA</h1>
-                <div id="live-time" class="text-[10px] font-tech text-gray-500">SYSTEM LIVE</div>
+        <div class="page" id="page-home">
+            <div class="flex justify-between items-center mb-6 pt-4 px-2">
+                <h1 class="text-xl font-black font-tech text-[#d4af37] italic">JIMINA OMEGA</h1>
+                <div id="live-time" class="text-[10px] font-tech text-gray-500">SYSTEM STABLE</div>
             </div>
 
             <div class="glass-card p-5 border-l-4 border-gold shadow-2xl">
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <p class="text-[9px] text-gray-500 font-bold uppercase">BTC Dominance</p>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase">BTC Dominance</p>
                         <h3 id="btc-price" class="text-2xl font-tech font-black text-white">$ --,---</h3>
                         <p id="btc-chg" class="text-xs font-bold mt-1">--%</p>
                     </div>
                     <div class="text-right border-l border-white/5 pl-4">
-                        <p class="text-[9px] text-gray-500 font-bold uppercase">DXY Delta (Est.)</p>
+                        <p class="text-[10px] text-gray-500 font-bold uppercase">DXY Delta (Est.)</p>
                         <h3 id="dxy-val" class="text-2xl font-tech font-black text-blue-400">101.42</h3>
                         <p id="dxy-status" class="text-[9px] font-black text-red-500">▼ BEARISH</p>
                     </div>
@@ -84,32 +82,31 @@
 
             <div class="oracle-matrix shadow-2xl">
                 <table style="width:100%">
-                    <tr class="bg-[#1a1a2e] text-[10px] font-black text-gold"><td colspan="2">INSTITUTIONAL ORDER FLOW (V15.3)</td></tr>
+                    <tr class="bg-[#1a1a2e] text-[11px] font-black text-gold"><td colspan="2">INSTITUTIONAL FLOW (V15.4)</td></tr>
                     <tr><td class="w-1/3 text-gray-500">主力當前路徑</td><td id="inst-action" class="font-bold">◎ 掃描中</td></tr>
-                    <tr><td class="text-gray-500">機構平衡價格</td><td id="inst-ob" class="font-tech text-blue-400 font-bold">--</td></tr>
+                    <tr><td class="text-gray-500">機構平衡價格</td><td id="inst-ob" class="font-tech text-blue-300 font-bold">--</td></tr>
                 </table>
             </div>
 
-            <div class="glass-card p-4 mt-6 border-t-2 border-red-500 italic text-[11px] text-gray-300">
-                「領主，App 已進行減壓優化。左右滑動切換。請休息片刻，我會守著數據。」
+            <div class="glass-card p-4 mt-6 border-t-2 border-red-500 italic text-xs text-gray-300 leading-relaxed">
+                「領主，數據已精鍊至 10 強，徹底解決卡頓。左右滑動切換戰區。」
             </div>
         </div>
 
-        <!-- PAGE 2: 全息雷達 -->
-        <div class="page" id="radar">
-            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.4em] uppercase mb-4 pt-4">Leader & Laggard Radar</h2>
-            <div id="main-radar" class="space-y-3">
-                <!-- 這裡只顯示 Top 30 強勢幣與主流幣，保證滑動流暢 -->
-                <div class="text-center py-20 opacity-30 text-xs">正在掃描最強領袖幣種...</div>
+        <!-- PAGE 2: 全息雷達 (10 強精鍊) -->
+        <div class="page" id="page-radar">
+            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.4em] uppercase mb-4 pt-4 px-2">The Elite 10 Radar</h2>
+            <div id="radar-list" class="space-y-3">
+                <div class="text-center py-20 opacity-30 text-xs">正在篩選全息標準幣種...</div>
             </div>
         </div>
 
-        <!-- PAGE 3: 奧米加獵殺 -->
-        <div class="page" id="signals">
-            <h2 class="text-[10px] font-black text-[#ff4d4d] tracking-[0.4em] uppercase mb-4 text-center pt-4">Execution List (Omega)</h2>
+        <!-- PAGE 3: 奧米加獵殺 (10 強訊號) -->
+        <div class="page" id="page-signals">
+            <h2 class="text-[10px] font-black text-[#ff4d4d] tracking-[0.4em] uppercase mb-4 text-center pt-4">Omega Hunting List</h2>
             <div class="oracle-matrix overflow-hidden shadow-2xl">
                 <table style="width:100%">
-                    <thead class="bg-[#2d0a3d] text-[9px] font-black">
+                    <thead class="bg-[#2d0a3d] text-[10px] font-black">
                         <tr><td>幣種</td><td>RS</td><td>指令</td><td>止損</td></tr>
                     </thead>
                     <tbody id="signal-body">
@@ -117,15 +114,18 @@
                     </tbody>
                 </table>
             </div>
+            <div class="p-4 mt-4 glass-card bg-red-900/10 border-red-500/20 text-center">
+                <p class="text-[10px] text-gray-500">非標的幣種已根據神域協議自動隱藏</p>
+            </div>
         </div>
 
     </div>
 
     <!-- 底部導航 -->
-    <nav class="nav-bar">
-        <div class="nav-item active" onclick="jumpTo(0)"><i class="fas fa-chess-rook text-lg block"></i>神域主頁</div>
-        <div class="nav-item" onclick="jumpTo(1)"><i class="fas fa-satellite text-lg block"></i>全息雷達</div>
-        <div class="nav-item" onclick="jumpTo(2)"><i class="fas fa-crosshairs text-lg block"></i>奧米加獵殺</div>
+    <nav class="nav-fixed" id="navbar">
+        <div class="nav-item active" onclick="goto(0)"><i class="fas fa-chess-rook text-lg block mb-1"></i>神域主頁</div>
+        <div class="nav-item" onclick="goto(1)"><i class="fas fa-satellite text-lg block mb-1"></i>全息雷達</div>
+        <div class="nav-item" onclick="goto(2)"><i class="fas fa-crosshairs text-lg block mb-1"></i>奧米加獵殺</div>
     </nav>
 
     <script>
@@ -134,86 +134,76 @@
         const swiper = document.getElementById('swiper');
         const navItems = document.querySelectorAll('.nav-item');
 
-        // 頁面跳轉功能
-        function jumpTo(index) {
-            swiper.scrollTo({ left: window.innerWidth * index, behavior: 'smooth' });
+        function goto(idx) {
+            swiper.scrollTo({ left: window.innerWidth * idx, behavior: 'smooth' });
         }
 
-        // 滑動導航同步
         swiper.addEventListener('scroll', () => {
-            const index = Math.round(swiper.scrollLeft / window.innerWidth);
-            navItems.forEach((item, i) => item.classList.toggle('active', i === index));
+            const idx = Math.round(swiper.scrollLeft / window.innerWidth);
+            navItems.forEach((item, i) => item.classList.toggle('active', i === idx));
         });
 
-        async function refreshData() {
+        async function update() {
             try {
                 const r = await fetch(API);
                 const data = await r.json();
-                const usdtPairs = data.filter(i => i.symbol.endsWith('USDT') && !i.symbol.includes('UP') && !i.symbol.includes('DOWN'));
+                const pairs = data.filter(i => i.symbol.endsWith('USDT') && !i.symbol.includes('UP') && !i.symbol.includes('DOWN'));
+                
+                const btc = pairs.find(i => i.symbol === "BTCUSDT");
+                const bPrice = parseFloat(btc.lastPrice);
+                const bChg = parseFloat(btc.priceChangePercent);
 
-                const btc = usdtPairs.find(i => i.symbol === "BTCUSDT");
-                updateMacro(btc);
+                // 1. Home
+                document.getElementById('btc-price').innerText = '$' + bPrice.toLocaleString();
+                document.getElementById('btc-chg').innerText = bChg + '%';
+                document.getElementById('btc-chg').style.color = bChg > 0 ? '#00ffcc' : '#ff4d4d';
+                document.getElementById('inst-ob').innerText = (bPrice * 0.991).toFixed(0);
+                document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
 
-                // --- 效能優化：只處理前 30 名與後 10 名 ---
-                const sorted = usdtPairs.sort((a,b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
-                const top30 = sorted.slice(0, 30);
-                const bottom10 = sorted.slice(-10);
-                const combined = [...new Set([...usdtPairs.filter(i => MAINSTREAM.includes(i.symbol)), ...top30, ...bottom10])];
+                // 2. Elite 10 Logic (5 Mainstream + Top 5 Alts)
+                const sorted = pairs.sort((a,b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
+                const topAlts = sorted.filter(i => !MAINSTREAM.includes(i.symbol)).slice(0, 5);
+                const mains = pairs.filter(i => MAINSTREAM.includes(i.symbol));
+                const elite10 = [...mains, ...topAlts];
 
-                updateRadar(combined);
-                updateHunting(top30, bottom10);
-
-            } catch (e) { console.log("神域冷卻中..."); }
-        }
-
-        function updateMacro(btc) {
-            const price = parseFloat(btc.lastPrice);
-            const chg = parseFloat(btc.priceChangePercent);
-            document.getElementById('btc-price').innerText = '$' + price.toLocaleString();
-            document.getElementById('btc-chg').innerText = chg + '%';
-            document.getElementById('btc-chg').style.color = chg > 0 ? '#00ffcc' : '#ff4d4d';
-            document.getElementById('inst-ob').innerText = (price * 0.992).toFixed(0);
-            document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
-        }
-
-        function updateRadar(list) {
-            const container = document.getElementById('main-radar');
-            container.innerHTML = list.map(coin => {
-                const chg = parseFloat(coin.priceChangePercent);
-                const price = parseFloat(coin.lastPrice);
-                return `
-                    <div class="glass-card p-3 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
-                        <span class="font-black text-sm">${coin.symbol.replace('USDT','')}</span>
-                        <div class="text-right">
-                            <p class="font-tech text-xs">$${price < 1 ? price.toFixed(5) : price.toLocaleString()}</p>
-                            <p class="text-[9px] font-bold ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
+                // 3. Radar Rendering
+                const rList = document.getElementById('radar-list');
+                rList.innerHTML = elite10.map(coin => {
+                    const chg = parseFloat(coin.priceChangePercent);
+                    const price = parseFloat(coin.lastPrice);
+                    return `
+                        <div class="glass-card p-4 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
+                            <span class="font-black text-sm">${coin.symbol.replace('USDT','')} ${MAINSTREAM.includes(coin.symbol) ? '<i class="fas fa-crown text-[8px] text-gold ml-1"></i>' : ''}</span>
+                            <div class="text-right">
+                                <p class="font-tech text-xs">$${price < 1 ? price.toFixed(5) : price.toLocaleString()}</p>
+                                <p class="text-[10px] font-bold ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+
+                // 4. Hunting Rendering
+                const sBody = document.getElementById('signal-body');
+                sBody.innerHTML = elite10.map(coin => {
+                    const chg = parseFloat(coin.priceChangePercent);
+                    const rs = Math.round(70 + (chg * 1.5));
+                    const price = parseFloat(coin.lastPrice);
+                    const isStrong = rs > 80;
+                    return `
+                        <tr>
+                            <td class="font-black">${coin.symbol.replace('USDT','')}</td>
+                            <td class="font-tech">${rs}</td>
+                            <td><span class="${isStrong ? 'badge-long' : 'badge-short'}">${isStrong ? 'STRONG LONG' : 'EXIT / SHORT'}</span></td>
+                            <td class="text-gray-500">$${(price * (isStrong ? 0.975 : 1.025)).toFixed(2)}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+            } catch (e) { console.log("數據對齊中..."); }
         }
 
-        function updateHunting(tops, bottoms) {
-            const body = document.getElementById('signal-body');
-            const all = [...tops.slice(0, 15), ...bottoms.slice(0, 5)];
-            body.innerHTML = all.map(coin => {
-                const chg = parseFloat(coin.priceChangePercent);
-                const rs = Math.round(70 + (chg * 1.5));
-                const price = parseFloat(coin.lastPrice);
-                const isLong = rs > 85;
-                return `
-                    <tr>
-                        <td class="font-black">${coin.symbol.replace('USDT','')}</td>
-                        <td class="font-tech">${rs}</td>
-                        <td><span class="${isLong ? 'badge-long' : 'badge-short'}">${isLong ? 'STRONG LONG' : 'SHORT / EXIT'}</span></td>
-                        <td class="text-gray-500">$${(price * (isLong ? 0.97 : 1.03)).toFixed(2)}</td>
-                    </tr>
-                `;
-            }).join('');
-        }
-
-        setInterval(refreshData, 5000);
-        refreshData();
+        setInterval(update, 5000);
+        update();
     </script>
 </body>
 </html>
