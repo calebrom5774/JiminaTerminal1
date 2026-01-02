@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>吉米娜·奧米加 V15.4</title>
+    <title>吉米娜·奧米加 V15.5</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#d4af37">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,36 +18,33 @@
 
         .bg-layer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(rgba(5, 5, 7, 0.88), rgba(15, 15, 25, 0.96)), url('icon.png');
+            background-image: linear-gradient(rgba(5, 5, 7, 0.9), rgba(15, 15, 25, 0.95)), url('icon.png');
             background-size: cover; background-position: center; z-index: -1;
-        }
-
-        /* 🚀 核心：左右滑動容器 */
-        .swipe-container {
-            display: flex; width: 300vw; height: 100vh;
-            overflow-x: auto; scroll-snap-type: x mandatory;
-            scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
-            touch-action: pan-x; will-change: scroll-position;
-        }
-        .swipe-container::-webkit-scrollbar { display: none; }
-        
-        .page {
-            width: 100vw; height: 100vh; scroll-snap-align: start;
-            flex-shrink: 0; overflow-y: auto; padding: 15px 15px 120px 15px;
-            box-sizing: border-box;
         }
 
         .font-tech { font-family: 'Orbitron', sans-serif; }
         .oracle-matrix { width: 100%; border-collapse: collapse; background: rgba(20, 20, 35, 0.95); border: 1px solid rgba(212, 175, 55, 0.3); border-radius: 10px; overflow: hidden; }
         .oracle-matrix td { padding: 12px 5px; border: 1px solid rgba(255,255,255,0.03); text-align: center; font-size: 12px; }
+        .glass-card { background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; margin-bottom: 12px; }
 
-        .glass-card { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.08); border-radius: 15px; margin-bottom: 12px; }
-        
-        /* 導航 */
-        .nav-fixed { position: fixed; bottom: 0; left: 0; right: 0; background: rgba(8,8,12,0.98); border-top: 1px solid rgba(212,175,55,0.4); padding: 10px 0; z-index: 2000; display: flex; }
-        .nav-item { flex: 1; text-align: center; color: #444; font-size: 10px; font-weight: 900; }
-        .nav-item.active { color: #d4af37; text-shadow: 0 0 10px #d4af37; }
+        /* 🚀 核心：左上角戰略選單 */
+        #strategic-menu {
+            position: fixed; top: 0; left: 0; width: 220px; height: 100%;
+            background: rgba(10, 10, 15, 0.98); border-right: 1px solid #d4af37;
+            z-index: 3000; transform: translateX(-100%); transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            padding-top: 60px;
+        }
+        #strategic-menu.open { transform: translateX(0); box-shadow: 20px 0 50px rgba(0,0,0,0.9); }
+        .menu-item { padding: 15px 25px; font-weight: 900; font-size: 14px; color: #888; transition: 0.3s; cursor: pointer; }
+        .menu-item.active { color: #d4af37; background: rgba(212,175,55,0.1); }
+        .menu-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 2999; }
 
+        /* 頁面切換內容 */
+        .view-content { height: 100vh; overflow-y: auto; padding: 70px 15px 120px 15px; box-sizing: border-box; display: none; }
+        .view-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .menu-toggle { position: fixed; top: 15px; left: 15px; z-index: 3001; color: #d4af37; font-size: 24px; cursor: pointer; }
         .badge-long { background: #00ffcc; color: #000; padding: 2px 5px; border-radius: 4px; font-weight: 900; font-size: 10px; }
         .badge-short { background: #ff4d4d; color: #fff; padding: 2px 5px; border-radius: 4px; font-weight: 900; font-size: 10px; }
     </style>
@@ -55,14 +52,24 @@
 <body>
 
     <div class="bg-layer"></div>
+    <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+    <div class="menu-overlay" id="menu-overlay" onclick="toggleMenu()"></div>
 
-    <div class="swipe-container" id="swiper">
-        
-        <!-- PAGE 1: 神域主頁 -->
-        <div class="page" id="page-home">
-            <div class="flex justify-between items-center mb-6 pt-4 px-2">
+    <!-- 左上角戰略選單 -->
+    <nav id="strategic-menu">
+        <div class="menu-item active" onclick="showView('home', this)"><i class="fas fa-chess-rook mr-3"></i>神域主頁</div>
+        <div class="menu-item" onclick="showView('radar', this)"><i class="fas fa-satellite mr-3"></i>全息雷達</div>
+        <div class="menu-item" onclick="showView('signals', this)"><i class="fas fa-crosshairs mr-3"></i>奧米加獵殺</div>
+        <div class="mt-10 px-6 text-[10px] text-gray-600 font-bold uppercase tracking-widest">Lord Support</div>
+    </nav>
+
+    <!-- 主體內容區塊 -->
+    <main>
+        <!-- VIEW 1: 神域主頁 -->
+        <section id="view-home" class="view-content active">
+            <div class="flex justify-between items-center mb-6 pt-2">
                 <h1 class="text-xl font-black font-tech text-[#d4af37] italic">JIMINA OMEGA</h1>
-                <div id="live-time" class="text-[10px] font-tech text-gray-500">SYSTEM STABLE</div>
+                <div id="live-time" class="text-[10px] font-tech text-gray-500 italic">SYSTEM READY</div>
             </div>
 
             <div class="glass-card p-5 border-l-4 border-gold shadow-2xl">
@@ -82,66 +89,56 @@
 
             <div class="oracle-matrix shadow-2xl">
                 <table style="width:100%">
-                    <tr class="bg-[#1a1a2e] text-[11px] font-black text-gold"><td colspan="2">INSTITUTIONAL FLOW (V15.4)</td></tr>
-                    <tr><td class="w-1/3 text-gray-500">主力當前路徑</td><td id="inst-action" class="font-bold">◎ 掃描中</td></tr>
-                    <tr><td class="text-gray-500">機構平衡價格</td><td id="inst-ob" class="font-tech text-blue-300 font-bold">--</td></tr>
+                    <tr class="bg-[#1a1a2e] text-[11px] font-black text-gold"><td colspan="2">INSTITUTIONAL FLOW (V15.5)</td></tr>
+                    <tr><td class="w-1/3 text-gray-500">主力動作</td><td id="inst-action" class="font-bold">◎ 掃描中</td></tr>
+                    <tr><td class="text-gray-500">平衝價格</td><td id="inst-ob" class="font-tech text-blue-300 font-bold">--</td></tr>
                 </table>
             </div>
 
-            <div class="glass-card p-4 mt-6 border-t-2 border-red-500 italic text-xs text-gray-300 leading-relaxed">
-                「領主，數據已精鍊至 10 強，徹底解決卡頓。左右滑動切換戰區。」
+            <div class="glass-card p-4 mt-6 border-t-2 border-red-500 italic text-[11px] text-gray-300 leading-relaxed">
+                「領主，已更換為選單模式。點擊左上角三橫線圖標即可快速指揮。」
             </div>
-        </div>
+        </section>
 
-        <!-- PAGE 2: 全息雷達 (10 強精鍊) -->
-        <div class="page" id="page-radar">
-            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.4em] uppercase mb-4 pt-4 px-2">The Elite 10 Radar</h2>
+        <!-- VIEW 2: 全息雷達 (10 強精鍊) -->
+        <section id="view-radar" class="view-content">
+            <h2 class="text-[10px] font-black text-gray-500 tracking-[0.4em] uppercase mb-4 px-2">The Elite 10 Radar</h2>
             <div id="radar-list" class="space-y-3">
-                <div class="text-center py-20 opacity-30 text-xs">正在篩選全息標準幣種...</div>
+                <div class="text-center py-20 opacity-30 text-xs italic">正在過濾數據殘留...</div>
             </div>
-        </div>
+        </section>
 
-        <!-- PAGE 3: 奧米加獵殺 (10 強訊號) -->
-        <div class="page" id="page-signals">
-            <h2 class="text-[10px] font-black text-[#ff4d4d] tracking-[0.4em] uppercase mb-4 text-center pt-4">Omega Hunting List</h2>
+        <!-- VIEW 3: 奧米加獵殺 (10 強訊號) -->
+        <section id="view-signals" class="view-content">
+            <h2 class="text-[10px] font-black text-[#ff4d4d] tracking-[0.4em] uppercase mb-4 text-center px-2">Omega Hunting List</h2>
             <div class="oracle-matrix overflow-hidden shadow-2xl">
                 <table style="width:100%">
                     <thead class="bg-[#2d0a3d] text-[10px] font-black">
                         <tr><td>幣種</td><td>RS</td><td>指令</td><td>止損</td></tr>
                     </thead>
-                    <tbody id="signal-body">
-                        <!-- 僅顯示高信心信號 -->
-                    </tbody>
+                    <tbody id="signal-body"></tbody>
                 </table>
             </div>
-            <div class="p-4 mt-4 glass-card bg-red-900/10 border-red-500/20 text-center">
-                <p class="text-[10px] text-gray-500">非標的幣種已根據神域協議自動隱藏</p>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- 底部導航 -->
-    <nav class="nav-fixed" id="navbar">
-        <div class="nav-item active" onclick="goto(0)"><i class="fas fa-chess-rook text-lg block mb-1"></i>神域主頁</div>
-        <div class="nav-item" onclick="goto(1)"><i class="fas fa-satellite text-lg block mb-1"></i>全息雷達</div>
-        <div class="nav-item" onclick="goto(2)"><i class="fas fa-crosshairs text-lg block mb-1"></i>奧米加獵殺</div>
-    </nav>
+        </section>
+    </main>
 
     <script>
         const API = "https://api.binance.com/api/v3/ticker/24hr";
         const MAINSTREAM = ['BTCUSDT', 'ETHUSDT', 'SOLUSDT', 'BNBUSDT', 'UNIUSDT'];
-        const swiper = document.getElementById('swiper');
-        const navItems = document.querySelectorAll('.nav-item');
 
-        function goto(idx) {
-            swiper.scrollTo({ left: window.innerWidth * idx, behavior: 'smooth' });
+        function toggleMenu() {
+            document.getElementById('strategic-menu').classList.toggle('open');
+            const overlay = document.getElementById('menu-overlay');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
         }
 
-        swiper.addEventListener('scroll', () => {
-            const idx = Math.round(swiper.scrollLeft / window.innerWidth);
-            navItems.forEach((item, i) => item.classList.toggle('active', i === idx));
-        });
+        function showView(viewId, el) {
+            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            document.getElementById('view-' + viewId).classList.add('active');
+            el.classList.add('active');
+            toggleMenu(); // 切換後自動關閉選單
+        }
 
         async function update() {
             try {
@@ -153,53 +150,44 @@
                 const bPrice = parseFloat(btc.lastPrice);
                 const bChg = parseFloat(btc.priceChangePercent);
 
-                // 1. Home
                 document.getElementById('btc-price').innerText = '$' + bPrice.toLocaleString();
                 document.getElementById('btc-chg').innerText = bChg + '%';
                 document.getElementById('btc-chg').style.color = bChg > 0 ? '#00ffcc' : '#ff4d4d';
-                document.getElementById('inst-ob').innerText = (bPrice * 0.991).toFixed(0);
+                document.getElementById('inst-ob').innerText = (bPrice * 0.992).toFixed(0);
                 document.getElementById('live-time').innerText = new Date().toLocaleTimeString();
 
-                // 2. Elite 10 Logic (5 Mainstream + Top 5 Alts)
                 const sorted = pairs.sort((a,b) => parseFloat(b.priceChangePercent) - parseFloat(a.priceChangePercent));
                 const topAlts = sorted.filter(i => !MAINSTREAM.includes(i.symbol)).slice(0, 5);
                 const mains = pairs.filter(i => MAINSTREAM.includes(i.symbol));
                 const elite10 = [...mains, ...topAlts];
 
-                // 3. Radar Rendering
                 const rList = document.getElementById('radar-list');
                 rList.innerHTML = elite10.map(coin => {
                     const chg = parseFloat(coin.priceChangePercent);
                     const price = parseFloat(coin.lastPrice);
-                    return `
-                        <div class="glass-card p-4 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
-                            <span class="font-black text-sm">${coin.symbol.replace('USDT','')} ${MAINSTREAM.includes(coin.symbol) ? '<i class="fas fa-crown text-[8px] text-gold ml-1"></i>' : ''}</span>
-                            <div class="text-right">
-                                <p class="font-tech text-xs">$${price < 1 ? price.toFixed(5) : price.toLocaleString()}</p>
-                                <p class="text-[10px] font-bold ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
-                            </div>
+                    return `<div class="glass-card p-4 flex justify-between items-center border-l-2 ${chg > 0 ? 'border-green-500' : 'border-red-500'}">
+                        <span class="font-black text-sm">${coin.symbol.replace('USDT','')}</span>
+                        <div class="text-right">
+                            <p class="font-tech text-xs">$${price < 1 ? price.toFixed(5) : price.toLocaleString()}</p>
+                            <p class="text-[10px] font-bold ${chg > 0 ? 'text-green-400' : 'text-red-400'}">${chg}%</p>
                         </div>
-                    `;
+                    </div>`;
                 }).join('');
 
-                // 4. Hunting Rendering
                 const sBody = document.getElementById('signal-body');
                 sBody.innerHTML = elite10.map(coin => {
                     const chg = parseFloat(coin.priceChangePercent);
                     const rs = Math.round(70 + (chg * 1.5));
-                    const price = parseFloat(coin.lastPrice);
                     const isStrong = rs > 80;
-                    return `
-                        <tr>
-                            <td class="font-black">${coin.symbol.replace('USDT','')}</td>
-                            <td class="font-tech">${rs}</td>
-                            <td><span class="${isStrong ? 'badge-long' : 'badge-short'}">${isStrong ? 'STRONG LONG' : 'EXIT / SHORT'}</span></td>
-                            <td class="text-gray-500">$${(price * (isStrong ? 0.975 : 1.025)).toFixed(2)}</td>
-                        </tr>
-                    `;
+                    return `<tr>
+                        <td class="font-black">${coin.symbol.replace('USDT','')}</td>
+                        <td class="font-tech">${rs}</td>
+                        <td><span class="${isStrong ? 'badge-long' : 'badge-short'}">${isStrong ? 'STRONG LONG' : 'EXIT / SHORT'}</span></td>
+                        <td class="text-gray-500">$${(parseFloat(coin.lastPrice) * (isStrong ? 0.975 : 1.025)).toFixed(2)}</td>
+                    </tr>`;
                 }).join('');
 
-            } catch (e) { console.log("數據對齊中..."); }
+            } catch (e) {}
         }
 
         setInterval(update, 5000);
